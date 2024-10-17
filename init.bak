@@ -1,0 +1,94 @@
+
+vim.g.base46_cache = vim.fn.stdpath "data" .. "/nvchad/base46/"
+vim.g.mapleader = " "
+
+-- bootstrap lazy and all plugins
+local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
+
+if not vim.uv.fs_stat(lazypath) then
+  local repo = "https://github.com/folke/lazy.nvim.git"
+  vim.fn.system { "git", "clone", "--filter=blob:none", repo, "--branch=stable", lazypath }
+end
+
+vim.opt.rtp:prepend(lazypath)
+
+local lazy_config = require "configs.lazy"
+
+-- require("mason").setup()
+
+-- load plugins
+require("lazy").setup({
+  {
+    "NvChad/NvChad",
+    lazy = false,
+    branch = "v2.5",
+    import = "nvchad.plugins",
+  },
+  { 'wakatime/vim-wakatime', lazy = false },
+  {
+    'mrcjkb/rustaceanvim',
+    version = '^5', -- Recommended
+    lazy = false, -- This plugin is already lazy
+    -- config = function()
+    --     local mason_registry = require('mason-registry')
+    --     local codelldb = mason_registry.get_package('codelldb')
+    --     local extenstion_path = codelldb.get_install_path() .. "/extenstion/"
+    --     local codelldb_path = extenstion_path .. "adapter/codelldb"
+    --     local liblldb_path = extenstion_path .. "lldb/lib/liblldb.dylib"
+    --     local cfg = require('rustaceanvim.config')
+
+    --     vim.g.rustaceanvim = {
+    --         dap = {
+    --             adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
+    --         },
+    --     }
+    -- end
+  },
+  {
+    'rust-lang/rust.vim',
+    ft = "rust",
+    init = function ()
+      vim.g.rustfmt_autosave = 1
+    end
+  },
+  {
+   'mfussenegger/nvim-dap',
+   config = function ()
+    local dap, dapui = require('dap'), require('dapui')
+    dap.listersers.before.attach.dapui.config = function ()
+      dapui.open()
+    end
+    dap.listersers.before.launch.dapui.config = function ()
+      dapui.open()
+    end
+    dap.listersers.before.event_terminated.dapui.config = function ()
+      dapui.close()
+    end
+    dap.listersers.before.event_exited.dapui.config = function ()
+      dapui.close()
+    end
+   end
+  },
+  {
+    "williamboman/mason.nvim"
+  },
+  {
+    'rcarriga/nvim-dap-ui',
+    dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"},
+    config = function ()
+      require('dapui').setup()
+    end
+  },
+  { import = "plugins" },
+}, lazy_config)
+
+-- load theme
+dofile(vim.g.base46_cache .. "defaults")
+dofile(vim.g.base46_cache .. "statusline")
+
+require "options"
+require "nvchad.autocmds"
+
+vim.schedule(function()
+  require "mappings"
+end)
