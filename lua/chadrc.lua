@@ -6,8 +6,8 @@
 local M = {}
 
 M.base46 = {
-  theme = "one_light",
-  theme_toggle = { "one_light", "onedark" },
+  theme = "ayu_light",
+  theme_toggle = { "ayu_light", "ayu_dark" },
   hl_override = {
     Comment = { italic = true },
     ["@comment"] = { italic = true },
@@ -31,7 +31,7 @@ M.lsp = {
 }
 
 M.nvdash = {
-  load_on_startup = true
+  load_on_startup = false
 }
 
 
