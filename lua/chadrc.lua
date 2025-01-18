@@ -27,4 +27,16 @@ M.ui = {
   },
 }
 
+M.nvdash = {
+  load_on_startup = true,
+
+  header = {
+    "Stanley Masinde",
+    "AKA John Doe",
+    "",
+    "John Doe",
+    "",
+    "",
+  },
+}
 return M
