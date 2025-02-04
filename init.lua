@@ -54,9 +54,6 @@ require("lspconfig").phpactor.setup {}
 -- ESLint
 require("lspconfig").eslint.setup {}
 
--- Tailwind CSS
-require("tailwind-tools").setup {}
-
 -- Non language feature plugins
 
 -- Git blame
