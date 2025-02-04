@@ -25,9 +25,8 @@ require("lazy").setup({
   { import = "plugins" },
 }, lazy_config)
 
-
 -- Ts language server
-require('lspconfig').ts_ls.setup {
+require("lspconfig").ts_ls.setup {
   init_options = {
     plugins = {
       {
@@ -45,19 +44,22 @@ require('lspconfig').ts_ls.setup {
 }
 
 -- Volar
-require('lspconfig').volar.setup {
+require("lspconfig").volar.setup {
   filetypes = { "typescript", "javascript", "vue", "json" },
 }
 
 -- Setup phpactor for PHP language features
-require('lspconfig').phpactor.setup{}
+require("lspconfig").phpactor.setup {}
 
 -- ESLint
 require("lspconfig").eslint.setup {}
 
--- Non language feature plugins 
+-- Tailwind CSS
+require("tailwind-tools").setup {}
 
--- Git blame 
+-- Non language feature plugins
+
+-- Git blame
 require("gitblame").setup {}
 
 -- load theme
