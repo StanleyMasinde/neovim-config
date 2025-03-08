@@ -48,6 +48,9 @@ require("lspconfig").volar.setup {
   filetypes = { "typescript", "javascript", "vue", "json" },
 }
 
+-- Tailwind
+require("lspconfig").tailwindcss.setup {}
+
 -- Setup phpactor for PHP language features
 require("lspconfig").phpactor.setup {}
 
