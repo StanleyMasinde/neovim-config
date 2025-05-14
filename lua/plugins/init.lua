@@ -29,29 +29,69 @@ return {
     lazy = false,
     ft = "rust",
     config = function()
-      local mason_registry = require "mason-registry"
-      local codelldb = mason_registry.get_package "codelldb"
-      local extension_path = codelldb:get_install_path() .. "/extension/"
+      -- Robust way to get codelldb path
+      local extension_path = vim.fn.stdpath "data" .. "/mason/packages/codelldb/extension/"
       local codelldb_path = extension_path .. "adapter/codelldb"
       local liblldb_path = extension_path .. "lldb/lib/liblldb.dylib"
-      -- If you are on Linux, replace the line above with the line below:
+      -- For Linux, use the following line instead:
       -- local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
-      local cfg = require "rustaceanvim.config"
 
       vim.g.rustaceanvim = {
+        tools = {
+          test_executor = "background",
+          run_on_save = true, -- Runs clippy automatically
+          auto_reload_workspace = true,
+        },
+        server = {
+          default_settings = {
+            ["rust-analyzer"] = {
+              cargo = {
+                allFeatures = true,
+                loadOutDirsFromCheck = true,
+                buildScripts = {
+                  enable = true,
+                },
+              },
+              check = {
+                command = "clippy", -- Proper way to enable clippy
+              },
+              inlayHints = {
+                lifetimeElisionHints = {
+                  enable = "always",
+                },
+              },
+              diagnostics = {
+                enable = true,
+              },
+              procMacro = {
+                enable = true,
+                ignored = {
+                  ["async-trait"] = { "async_trait" },
+                  ["napi-derive"] = { "napi" },
+                  ["async-recursion"] = { "async_recursion" },
+                },
+              },
+              files = {
+                excludeDirs = {
+                  ".direnv",
+                  ".git",
+                  ".github",
+                  ".gitlab",
+                  "bin",
+                  "node_modules",
+                  "target",
+                  "venv",
+                  ".venv",
+                },
+              },
+            },
+          },
+        },
         dap = {
-          adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
+          adapter = require("rustaceanvim.config").get_codelldb_adapter(codelldb_path, liblldb_path),
+          autoload_configurations = true,
         },
       }
-    end,
-  },
-
-  -- Rust support
-  {
-    "rust-lang/rust.vim",
-    ft = "rust",
-    init = function()
-      vim.g.rustfmt_autosave = 1
     end,
   },
 
