@@ -44,9 +44,13 @@ require("lspconfig").ts_ls.setup {
 }
 
 -- Volar
+-- This has been deprecated
 require("lspconfig").volar.setup {
   filetypes = { "typescript", "javascript", "vue", "json" },
 }
+
+-- Vue Ls 
+-- require('lspconfig').vue_ls.setup{}
 
 -- Tailwind
 require("lspconfig").tailwindcss.setup {}
