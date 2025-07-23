@@ -25,4 +25,15 @@ vim.api.nvim_set_keymap("n", "<leader>el", "<cmd>lua require('lint').try_lint()<
 -- Format file
 vim.api.nvim_set_keymap("n", "<leader>fm", "<cmd>lua require('conform').format({ lsp_fallback = true })<CR>", { noremap = true, silent = true, desc = "Format file" })
 
+-- DAP (Debugger) mappings
+vim.api.nvim_set_keymap("n", "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<CR>", { noremap = true, silent = true, desc = "Toggle Breakpoint" })
+vim.api.nvim_set_keymap("n", "<leader>dc", "<cmd>lua require('dap').continue()<CR>", { noremap = true, silent = true, desc = "Continue" })
+vim.api.nvim_set_keymap("n", "<leader>dso", "<cmd>lua require('dap').step_over()<CR>", { noremap = true, silent = true, desc = "Step Over" })
+vim.api.nvim_set_keymap("n", "<leader>dsi", "<cmd>lua require('dap').step_into()<CR>", { noremap = true, silent = true, desc = "Step Into" })
+vim.api.nvim_set_keymap("n", "<leader>dsO", "<cmd>lua require('dap').step_out()<CR>", { noremap = true, silent = true, desc = "Step Out" })
+vim.api.nvim_set_keymap("n", "<leader>dr", "<cmd>lua require('dap.repl').open()<CR>", { noremap = true, silent = true, desc = "Open REPL" })
+vim.api.nvim_set_keymap("n", "<leader>dt", "<cmd>lua require('dapui').toggle()<CR>", { noremap = true, silent = true, desc = "Toggle DAP UI" })
+vim.api.nvim_set_keymap("n", "<leader>dx", "<cmd>lua require('dap').terminate()<CR>", { noremap = true, silent = true, desc = "Terminate" })
+vim.api.nvim_set_keymap("n", "<leader>dR", "<cmd>lua require('dap').restart()<CR>", { noremap = true, silent = true, desc = "Restart" })
+
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")

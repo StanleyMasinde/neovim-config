@@ -78,4 +78,54 @@ return {
       enabled = true
     }
   },
+
+  -- DAP (Debug Adapter Protocol)
+  {
+    "mfussenegger/nvim-dap",
+    dependencies = {
+      -- UI for DAP
+      "rcarriga/nvim-dap-ui",
+      "nvim-neotest/nvim-nio",
+      
+      -- Virtual text support
+      "theHamsta/nvim-dap-virtual-text",
+      
+      -- Mason integration for automatic DAP installation
+      "williamboman/mason.nvim",
+      "jay-babu/mason-nvim-dap.nvim",
+    },
+    config = function()
+      local dap = require("dap")
+      local dapui = require("dapui")
+
+      -- Setup dap-ui
+      dapui.setup()
+
+      -- Setup virtual text
+      require("nvim-dap-virtual-text").setup()
+
+      -- Setup mason-nvim-dap for automatic adapter installation
+      require("mason-nvim-dap").setup({
+        ensure_installed = {
+          "node2",     -- JavaScript/TypeScript
+          "codelldb",  -- Rust/C/C++
+        },
+        automatic_installation = true,
+      })
+
+      -- Load DAP configurations
+      require("configs.dap")
+
+      -- Automatically open/close dap-ui
+      dap.listeners.after.event_initialized["dapui_config"] = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated["dapui_config"] = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited["dapui_config"] = function()
+        dapui.close()
+      end
+    end,
+  },
 }
