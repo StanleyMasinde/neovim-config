@@ -36,4 +36,7 @@ vim.api.nvim_set_keymap("n", "<leader>dt", "<cmd>lua require('dapui').toggle()<C
 vim.api.nvim_set_keymap("n", "<leader>dx", "<cmd>lua require('dap').terminate()<CR>", { noremap = true, silent = true, desc = "Terminate" })
 vim.api.nvim_set_keymap("n", "<leader>dR", "<cmd>lua require('dap').restart()<CR>", { noremap = true, silent = true, desc = "Restart" })
 
+-- Theme sync mapping
+vim.api.nvim_set_keymap("n", "<leader>ts", "<cmd>SyncTheme<CR>", { noremap = true, silent = true, desc = "Sync theme with system" })
+
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")

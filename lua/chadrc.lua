@@ -2,11 +2,30 @@
 -- https://github.com/NvChad/ui/blob/v3.0/lua/nvconfig.lua
 -- Please read that file to know all available options :( 
 
----@type ChadrcConfig
+---@class ChadrcConfig
 local M = {}
 
+-- Function to detect system theme on macOS
+local function get_system_theme()
+  local handle = io.popen("defaults read -g AppleInterfaceStyle 2>/dev/null")
+  if not handle then
+    return "one_light" -- Default to light theme if command fails
+  end
+  
+  local result = handle:read("*a")
+  handle:close()
+  
+  -- If AppleInterfaceStyle is "Dark", system is in dark mode
+  -- If the command fails or returns empty, system is in light mode
+  if result and result:match("Dark") then
+    return "onedark"
+  else
+    return "one_light"
+  end
+end
+
 M.base46 = {
-  theme = "one_light",
+  theme = get_system_theme(),
   theme_toggle = { "onedark", "one_light" },
   hl_override = {
     Comment = { italic = true },
