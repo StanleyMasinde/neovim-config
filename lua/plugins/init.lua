@@ -79,6 +79,122 @@ return {
     }
   },
 
+  -- Enhanced Git integration
+  {
+    "tpope/vim-fugitive",
+    cmd = { "Git", "G", "Gdiffsplit", "Gread", "Gwrite", "Ggrep", "GMove", "GDelete", "GBrowse", "GRemove", "GRename", "Glgrep", "Gedit" }
+  },
+
+  -- LazyGit integration
+  {
+    "kdheepak/lazygit.nvim",
+    cmd = "LazyGit",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+  },
+
+  -- Project management
+  {
+    "ahmedkhalf/project.nvim",
+    config = function()
+      require("project_nvim").setup {
+        manual_mode = false,
+        detection_methods = { "lsp", "pattern" },
+        patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", "Cargo.toml" },
+        ignore_lsp = {},
+        exclude_dirs = {},
+        show_hidden = false,
+        silent_chdir = true,
+        scope_chdir = 'global',
+        datapath = vim.fn.stdpath("data"),
+      }
+      
+      -- Load telescope extension
+      require('telescope').load_extension('projects')
+    end
+  },
+
+  -- Session management
+  {
+    "folke/persistence.nvim",
+    event = "BufReadPre",
+    config = function()
+      require("persistence").setup()
+    end,
+  },
+
+  -- Enhanced file navigation
+  {
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      local harpoon = require("harpoon")
+      harpoon:setup()
+    end,
+  },
+
+  -- Better quickfix window
+  {
+    "kevinhwang91/nvim-bqf",
+    ft = "qf",
+    config = function()
+      require('bqf').setup()
+    end,
+  },
+
+  -- Trouble diagnostics
+  {
+    "folke/trouble.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    cmd = "Trouble",
+    config = function()
+      require("trouble").setup()
+    end,
+  },
+
+  -- Advanced refactoring
+  {
+    "ThePrimeagen/refactoring.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("refactoring").setup()
+    end,
+  },
+
+  -- Better code actions UI
+  {
+    "weilbith/nvim-code-action-menu",
+    cmd = "CodeActionMenu",
+  },
+
+  -- Enhanced text objects
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    event = "BufReadPost",
+  },
+
+  -- Additional text objects
+  {
+    "wellle/targets.vim",
+    event = "BufReadPost",
+  },
+
+  -- Surround operations
+  {
+    "kylechui/nvim-surround",
+    version = "*",
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup()
+    end
+  },
+
   -- DAP (Debug Adapter Protocol)
   {
     "mfussenegger/nvim-dap",
