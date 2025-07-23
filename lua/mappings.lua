@@ -18,4 +18,11 @@ vim.api.nvim_set_keymap("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<CR
 vim.api.nvim_set_keymap("n", "<leader>ac", "<cmd>lua vim.lsp.buf.code_action()<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>er", "<cmd>lua vim.diagnostic.goto_next()<CR>", { noremap = true, silent = true })
 
+-- ESLint specific mappings
+vim.api.nvim_set_keymap("n", "<leader>ef", "<cmd>EslintFixAll<CR>", { noremap = true, silent = true, desc = "ESLint fix all" })
+vim.api.nvim_set_keymap("n", "<leader>el", "<cmd>lua require('lint').try_lint()<CR>", { noremap = true, silent = true, desc = "Run ESLint" })
+
+-- Format file
+vim.api.nvim_set_keymap("n", "<leader>fm", "<cmd>lua require('conform').format({ lsp_fallback = true })<CR>", { noremap = true, silent = true, desc = "Format file" })
+
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")

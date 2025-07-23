@@ -59,8 +59,13 @@ vim.lsp.config('rust_analyzer', {
   },
 })
 
+-- ESLint Language Server
+vim.lsp.config('eslint', {
+  filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue' },
+})
+
 -- Enable all configured language servers
-local servers = { "html", "cssls", "vtsls", "rust_analyzer" }
+local servers = { "html", "cssls", "vtsls", "rust_analyzer", "eslint" }
 if vue_server_exists then
   table.insert(servers, "vue_ls")
 end
