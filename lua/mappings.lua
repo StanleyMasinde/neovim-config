@@ -55,9 +55,9 @@ vim.api.nvim_set_keymap("n", "<leader>ts", "<cmd>SyncTheme<CR>",
 
 -- Git mappings
 vim.api.nvim_set_keymap("n", "<leader>gg", "<cmd>LazyGit<CR>", { noremap = true, silent = true, desc = "LazyGit" })
-vim.api.nvim_set_keymap("n", "<leader>gf", "<cmd>Git<CR>", { noremap = true, silent = true, desc = "Git status" })
+vim.api.nvim_set_keymap("n", "<leader>gs", "<cmd>Git<CR>", { noremap = true, silent = true, desc = "Git status" })
 vim.api.nvim_set_keymap("n", "<leader>gb", "<cmd>Git blame<CR>", { noremap = true, silent = true, desc = "Git blame" })
-vim.api.nvim_set_keymap("n", "<leader>gd", "<cmd>Gdiffsplit<CR>",
+vim.api.nvim_set_keymap("n", "<leader>gF", "<cmd>Gdiffsplit<CR>",
   { noremap = true, silent = true, desc = "Git diff split" })
 
 -- Project and session management
