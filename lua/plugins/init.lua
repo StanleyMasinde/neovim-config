@@ -62,7 +62,7 @@ return {
     opts = {
       ensure_installed = {
         "vim", "lua", "vimdoc",
-        "html", "css", "javascript", "typescript", "vue", "rust"
+        "html", "css", "javascript", "typescript", "vue", "rust", "toml"
       },
     },
   },
@@ -72,8 +72,29 @@ return {
   {
     'saecki/crates.nvim',
     tag = 'stable',
+    event = { "BufRead Cargo.toml" },
     config = function()
-      require('crates').setup()
+      require('crates').setup({
+        completion = {
+          cmp = {
+            enabled = false
+          },
+          crates = {
+            enabled = true,
+            max_results = 8,
+            min_chars = 3,
+          }
+        },
+        lsp = {
+          enabled = true,
+          on_attach = function(client, bufnr)
+            vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+          end,
+          actions = true,
+          completion = true,
+          hover = true,
+        },
+      })
     end,
   },
 
