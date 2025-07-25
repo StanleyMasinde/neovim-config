@@ -11,7 +11,7 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       local lint = require("lint")
-      
+
       lint.linters_by_ft = {
         javascript = { "eslint_d" },
         javascriptreact = { "eslint_d" },
@@ -45,7 +45,7 @@ return {
   {
     'mrcjkb/rustaceanvim',
     version = '^6', -- Recommended
-    lazy = false,  -- This plugin is already lazy
+    lazy = false,   -- This plugin is already lazy
   },
 
   -- Use blink.cmp for completion (recommended for better performance)
@@ -137,7 +137,7 @@ return {
         scope_chdir = 'global',
         datapath = vim.fn.stdpath("data"),
       }
-      
+
       -- Load telescope extension
       require('telescope').load_extension('projects')
     end
@@ -230,10 +230,10 @@ return {
       -- UI for DAP
       "rcarriga/nvim-dap-ui",
       "nvim-neotest/nvim-nio",
-      
+
       -- Virtual text support
       "theHamsta/nvim-dap-virtual-text",
-      
+
       -- Mason integration for automatic DAP installation
       "williamboman/mason.nvim",
       "jay-babu/mason-nvim-dap.nvim",
@@ -251,8 +251,8 @@ return {
       -- Setup mason-nvim-dap for automatic adapter installation
       require("mason-nvim-dap").setup({
         ensure_installed = {
-          "node2",     -- JavaScript/TypeScript
-          "codelldb",  -- Rust/C/C++
+          "node2",    -- JavaScript/TypeScript
+          "codelldb", -- Rust/C/C++
         },
         automatic_installation = true,
       })

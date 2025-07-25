@@ -6,17 +6,17 @@ local function apply_system_theme()
   if not handle then
     return
   end
-  
+
   local result = handle:read("*a")
   handle:close()
-  
+
   local theme
   if result and result:match("Dark") then
     theme = "onedark"
   else
     theme = "one_light"
   end
-  
+
   -- Use NvChad's theme switching mechanism
   local present, base46 = pcall(require, "base46")
   if present then

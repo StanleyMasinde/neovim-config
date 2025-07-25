@@ -1,7 +1,8 @@
 require("nvchad.configs.lspconfig").defaults()
 
 -- Vue and TypeScript configuration using Neovim 0.11+ LSP API
-local vue_language_server_path = vim.fn.stdpath('data') .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
+local vue_language_server_path = vim.fn.stdpath('data') ..
+"/mason/packages/vue-language-server/node_modules/@vue/language-server"
 
 -- Check if Vue language server exists
 local vue_server_exists = vim.fn.isdirectory(vue_language_server_path) == 1

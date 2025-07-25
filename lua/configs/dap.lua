@@ -6,7 +6,7 @@ dap.adapters.codelldb = {
   port = "${port}",
   executable = {
     command = vim.fn.stdpath("data") .. '/mason/bin/codelldb',
-    args = {"--port", "${port}"},
+    args = { "--port", "${port}" },
   }
 }
 
@@ -56,7 +56,7 @@ dap.configurations.rust = {
 dap.adapters.node2 = {
   type = 'executable',
   command = 'node',
-  args = {vim.fn.stdpath("data") .. '/mason/packages/node-debug2-adapter/out/src/nodeDebug.js'},
+  args = { vim.fn.stdpath("data") .. '/mason/packages/node-debug2-adapter/out/src/nodeDebug.js' },
 }
 
 dap.configurations.javascript = {
@@ -74,7 +74,7 @@ dap.configurations.javascript = {
     name = 'Attach to process',
     type = 'node2',
     request = 'attach',
-    processId = require'dap.utils'.pick_process,
+    processId = require 'dap.utils'.pick_process,
   },
 }
 

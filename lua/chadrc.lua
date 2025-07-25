@@ -1,6 +1,6 @@
--- This file needs to have same structure as nvconfig.lua 
+-- This file needs to have same structure as nvconfig.lua
 -- https://github.com/NvChad/ui/blob/v3.0/lua/nvconfig.lua
--- Please read that file to know all available options :( 
+-- Please read that file to know all available options :(
 
 ---@class ChadrcConfig
 local M = {}
@@ -11,10 +11,10 @@ local function get_system_theme()
   if not handle then
     return "one_light" -- Default to light theme if command fails
   end
-  
+
   local result = handle:read("*a")
   handle:close()
-  
+
   -- If AppleInterfaceStyle is "Dark", system is in dark mode
   -- If the command fails or returns empty, system is in light mode
   if result and result:match("Dark") then
