@@ -47,8 +47,15 @@ return {
     version = '^6', -- Recommended
     lazy = false,  -- This plugin is already lazy
   },
-  -- test new blink
+
+  -- Use blink.cmp for completion (recommended for better performance)
   { import = "nvchad.blink.lazyspec" },
+
+  -- Disable nvim-cmp to prevent conflicts with blink.cmp
+  {
+    "hrsh7th/nvim-cmp",
+    enabled = false,
+  },
 
   {
     "nvim-treesitter/nvim-treesitter",

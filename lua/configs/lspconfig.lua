@@ -49,23 +49,13 @@ vim.lsp.config('cssls', {
   filetypes = { 'css', 'scss', 'less' },
 })
 
--- Rust Language Server (fallback - rustaceanvim handles this better)
-vim.lsp.config('rust_analyzer', {
-  settings = {
-    ["rust-analyzer"] = {
-      cargo = { allFeatures = true },
-      checkOnSave = { command = "clippy" },
-    },
-  },
-})
-
 -- ESLint Language Server
 vim.lsp.config('eslint', {
   filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue' },
 })
 
--- Enable all configured language servers
-local servers = { "html", "cssls", "vtsls", "rust_analyzer", "eslint" }
+-- Enable all configured language servers (rust_analyzer handled by rustaceanvim)
+local servers = { "html", "cssls", "vtsls", "eslint" }
 if vue_server_exists then
   table.insert(servers, "vue_ls")
 end
