@@ -223,6 +223,59 @@ return {
     end
   },
 
+  -- Multi-cursor editing
+  {
+    "mg979/vim-visual-multi",
+    branch = "master",
+    event = "VeryLazy",
+    init = function()
+      -- Configure vim-visual-multi settings
+      vim.g.VM_maps = {
+        ["Find Under"] = '<leader>mf',      -- Find word under cursor 
+        ["Find Subword Under"] = '<leader>mf', -- Find subword under cursor
+        ["Select All"] = '<leader>ma',      -- Select all occurrences
+        ["Start Regex Search"] = '<leader>mr', -- Start regex search
+        ["Add Cursor Down"] = '<leader>mj', -- Add cursor down
+        ["Add Cursor Up"] = '<leader>mk',   -- Add cursor up
+        ["Add Cursor At Pos"] = '<leader>mi', -- Add cursor at position
+        ["Select h"] = '<S-Left>',          -- Select left
+        ["Select l"] = '<S-Right>',         -- Select right
+        ["Select j"] = '<S-Down>',          -- Select down
+        ["Select k"] = '<S-Up>',            -- Select up
+        ["Skip Region"] = '<leader>mx',     -- Skip current and find next
+        ["Remove Region"] = '<leader>mp',   -- Remove current selection
+        ["Visual Cursors"] = '<leader>mv',  -- Visual selection to cursors
+        ["Visual All"] = '<leader>mA',      -- Select all in visual selection
+      }
+      
+      -- Disable default mappings that might conflict
+      vim.g.VM_default_mappings = 0
+      
+      -- Theme settings
+      vim.g.VM_theme = 'iceblue'
+      
+      -- Show messages
+      vim.g.VM_verbose = 0
+      
+      -- Enable undo/redo
+      vim.g.VM_maps["Undo"] = 'u'
+      vim.g.VM_maps["Redo"] = '<C-r>'
+      
+      -- Disable VM in specific file types to avoid conflicts
+      vim.g.VM_set_statusline = 0
+      vim.g.VM_silent_exit = 1
+      
+      -- Create autocmd to disable VM in nvim-tree and other file explorers
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "NvimTree", "neo-tree", "oil", "dirvish", "fern" },
+        callback = function()
+          vim.b.VM_disable = 1
+        end,
+        desc = "Disable vim-visual-multi in file explorers"
+      })
+    end,
+  },
+
   -- DAP (Debug Adapter Protocol)
   {
     "mfussenegger/nvim-dap",
