@@ -18,6 +18,7 @@ return {
         typescript = { "eslint_d" },
         typescriptreact = { "eslint_d" },
         vue = { "eslint_d" },
+        php = { "phpstan" },
       }
 
       local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
@@ -62,7 +63,7 @@ return {
     opts = {
       ensure_installed = {
         "vim", "lua", "vimdoc",
-        "html", "css", "javascript", "typescript", "vue", "rust", "toml"
+        "html", "css", "javascript", "typescript", "vue", "rust", "toml", "php"
       },
     },
   },
@@ -304,8 +305,9 @@ return {
       -- Setup mason-nvim-dap for automatic adapter installation
       require("mason-nvim-dap").setup({
         ensure_installed = {
-          "node2",    -- JavaScript/TypeScript
-          "codelldb", -- Rust/C/C++
+          "node2",        -- JavaScript/TypeScript
+          "codelldb",     -- Rust/C/C++
+          "php-debug-adapter", -- PHP
         },
         automatic_installation = true,
       })

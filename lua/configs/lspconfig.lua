@@ -2,7 +2,7 @@ require("nvchad.configs.lspconfig").defaults()
 
 -- Vue and TypeScript configuration using Neovim 0.11+ LSP API
 local vue_language_server_path = vim.fn.stdpath('data') ..
-"/mason/packages/vue-language-server/node_modules/@vue/language-server"
+    "/mason/packages/vue-language-server/node_modules/@vue/language-server"
 
 -- Check if Vue language server exists
 local vue_server_exists = vim.fn.isdirectory(vue_language_server_path) == 1
@@ -55,8 +55,32 @@ vim.lsp.config('eslint', {
   filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue' },
 })
 
+-- PHP Language Server (Intelephense)
+vim.lsp.config('intelephense', {
+  filetypes = { 'php' },
+  settings = {
+    intelephense = {
+      files = {
+        maxSize = 1000000,
+      },
+      format = {
+        enable = true,
+      },
+      completion = {
+        insertUseDeclaration = true,
+        fullyQualifyGlobalConstantsAndFunctions = false,
+        triggerParameterHints = true,
+        maxItems = 100,
+      },
+      diagnostics = {
+        enable = true,
+      },
+    },
+  },
+})
+
 -- Enable all configured language servers (rust_analyzer handled by rustaceanvim)
-local servers = { "html", "cssls", "vtsls", "eslint" }
+local servers = { "html", "cssls", "vtsls", "eslint", "intelephense" }
 if vue_server_exists then
   table.insert(servers, "vue_ls")
 end

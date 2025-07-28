@@ -6,6 +6,7 @@ local options = {
     typescript = { "eslint_d" },
     typescriptreact = { "eslint_d" },
     vue = { "eslint_d" },
+    php = { "php_cs_fixer" },
     -- css = { "prettier" },
     -- html = { "prettier" },
   },

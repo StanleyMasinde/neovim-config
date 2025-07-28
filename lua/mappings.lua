@@ -12,6 +12,7 @@ map("i", "jk", "<ESC>")
 -- E.g <space>gd goes to variable definition,
 -- <space>ac will show code actions
 -- <space>er will jump to the next error and show it in details
+-- PHP specific: <space>pl runs PHPStan, <space>pf formats PHP files
 
 -- LSP mappings
 map("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<CR>", 
@@ -26,6 +27,12 @@ map("n", "<leader>ef", "<cmd>EslintFixAll<CR>",
   { desc = "ESLint fix all" })
 map("n", "<leader>el", "<cmd>lua require('lint').try_lint()<CR>", 
   { desc = "Run ESLint" })
+
+-- PHP specific mappings
+map("n", "<leader>pl", "<cmd>lua require('lint').try_lint()<CR>", 
+  { desc = "Run PHPStan" })
+map("n", "<leader>pf", "<cmd>lua require('conform').format({ lsp_fallback = true })<CR>", 
+  { desc = "Format PHP file" })
 
 -- Format file
 map("n", "<leader>fm", "<cmd>lua require('conform').format({ lsp_fallback = true })<CR>", 
@@ -50,6 +57,10 @@ map("n", "<leader>dx", "<cmd>lua require('dap').terminate()<CR>",
   { desc = "Terminate" })
 map("n", "<leader>dR", "<cmd>lua require('dap').restart()<CR>", 
   { desc = "Restart" })
+
+-- PHP-specific DAP mappings
+map("n", "<leader>dp", "<cmd>lua require('dap').run(require('dap').configurations.php[1])<CR>", 
+  { desc = "Start PHP Xdebug listener" })
 
 -- Theme sync mapping
 map("n", "<leader>ts", "<cmd>SyncTheme<CR>", 

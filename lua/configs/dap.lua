@@ -79,3 +79,57 @@ dap.configurations.javascript = {
 }
 
 dap.configurations.typescript = dap.configurations.javascript
+
+-- PHP configuration
+dap.adapters.php = {
+  type = 'executable',
+  command = 'node',
+  args = { vim.fn.stdpath("data") .. '/mason/packages/php-debug-adapter/extension/out/phpDebug.js' }
+}
+
+dap.configurations.php = {
+  {
+    name = 'Listen for Xdebug',
+    type = 'php',
+    request = 'launch',
+    port = 9003,
+    log = false,
+    pathMappings = {
+      ["/app"] = "${workspaceFolder}",
+    },
+  },
+  {
+    name = 'Launch currently open script',
+    type = 'php',
+    request = 'launch',
+    program = '${file}',
+    cwd = '${fileDirname}',
+    port = 0,
+    runtimeArgs = {
+      '-dxdebug.start_with_request=yes'
+    },
+    env = {
+      XDEBUG_MODE = 'debug,develop',
+      XDEBUG_CONFIG = 'client_port=${port}'
+    }
+  },
+  {
+    name = 'Launch Built-in web server',
+    type = 'php',
+    request = 'launch',
+    runtimeArgs = {
+      '-dxdebug.mode=debug',
+      '-dxdebug.start_with_request=yes',
+      '-S',
+      'localhost:8000'
+    },
+    program = '',
+    cwd = '${workspaceFolder}',
+    port = 9003,
+    serverReadyAction = {
+      pattern = 'Development Server \\(http://localhost:([0-9]+)\\) started',
+      uriFormat = 'http://localhost:%s',
+      action = 'openExternally'
+    }
+  }
+}
