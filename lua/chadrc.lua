@@ -12,7 +12,7 @@ local function get_system_theme()
     return "one_light" -- Default to light theme if command fails
   end
 
-  local result = handle:read("*a")
+  local result = handle:read("*l")
   handle:close()
 
   -- If AppleInterfaceStyle is "Dark", system is in dark mode
