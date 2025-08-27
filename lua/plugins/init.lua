@@ -12,12 +12,50 @@ return {
     config = function()
       local lint = require("lint")
 
+      -- Check if a file exists in the current working directory
+      local function file_exists(file)
+        local f = io.open(file, "r")
+        if f then
+          f:close()
+          return true
+        end
+        return false
+      end
+
+      -- Check for project-specific configuration files
+      local has_eslint = false
+      local eslint_files = {
+        '.eslintrc.js', '.eslintrc.cjs', '.eslintrc.yaml',
+        '.eslintrc.yml', '.eslintrc.json', '.eslintrc',
+        'eslint.config.js', 'eslint.config.mjs'
+      }
+
+      for _, file in ipairs(eslint_files) do
+        if file_exists(file) then
+          has_eslint = true
+          break
+        end
+      end
+
+      -- Check package.json for ESLint dependency
+      if not has_eslint and file_exists('package.json') then
+        local f = io.open('package.json', "r")
+        if f then
+          local content = f:read("*all")
+          f:close()
+          if content:find([["eslint"]]) then
+            has_eslint = true
+          end
+        end
+      end
+
+      -- Configure linters based on what's available in the project
       lint.linters_by_ft = {
-        javascript = { "eslint_d" },
-        javascriptreact = { "eslint_d" },
-        typescript = { "eslint_d" },
-        typescriptreact = { "eslint_d" },
-        vue = { "eslint_d" },
+        javascript = has_eslint and { "eslint_d" } or {},
+        javascriptreact = has_eslint and { "eslint_d" } or {},
+        typescript = has_eslint and { "eslint_d" } or {},
+        typescriptreact = has_eslint and { "eslint_d" } or {},
+        vue = has_eslint and { "eslint_d" } or {},
         php = { "phpstan" },
       }
 
@@ -40,6 +78,8 @@ return {
     "neovim/nvim-lspconfig",
     config = function()
       require "configs.lspconfig"
+      -- Initialize Vue specific settings
+      require "configs.vue".setup()
     end,
   },
 
@@ -232,40 +272,40 @@ return {
     init = function()
       -- Configure vim-visual-multi settings
       vim.g.VM_maps = {
-        ["Find Under"] = '<leader>mf',      -- Find word under cursor 
+        ["Find Under"] = '<leader>mf',         -- Find word under cursor
         ["Find Subword Under"] = '<leader>mf', -- Find subword under cursor
-        ["Select All"] = '<leader>ma',      -- Select all occurrences
+        ["Select All"] = '<leader>ma',         -- Select all occurrences
         ["Start Regex Search"] = '<leader>mr', -- Start regex search
-        ["Add Cursor Down"] = '<leader>mj', -- Add cursor down
-        ["Add Cursor Up"] = '<leader>mk',   -- Add cursor up
-        ["Add Cursor At Pos"] = '<leader>mi', -- Add cursor at position
-        ["Select h"] = '<S-Left>',          -- Select left
-        ["Select l"] = '<S-Right>',         -- Select right
-        ["Select j"] = '<S-Down>',          -- Select down
-        ["Select k"] = '<S-Up>',            -- Select up
-        ["Skip Region"] = '<leader>mx',     -- Skip current and find next
-        ["Remove Region"] = '<leader>mp',   -- Remove current selection
-        ["Visual Cursors"] = '<leader>mv',  -- Visual selection to cursors
-        ["Visual All"] = '<leader>mA',      -- Select all in visual selection
+        ["Add Cursor Down"] = '<leader>mj',    -- Add cursor down
+        ["Add Cursor Up"] = '<leader>mk',      -- Add cursor up
+        ["Add Cursor At Pos"] = '<leader>mi',  -- Add cursor at position
+        ["Select h"] = '<S-Left>',             -- Select left
+        ["Select l"] = '<S-Right>',            -- Select right
+        ["Select j"] = '<S-Down>',             -- Select down
+        ["Select k"] = '<S-Up>',               -- Select up
+        ["Skip Region"] = '<leader>mx',        -- Skip current and find next
+        ["Remove Region"] = '<leader>mp',      -- Remove current selection
+        ["Visual Cursors"] = '<leader>mv',     -- Visual selection to cursors
+        ["Visual All"] = '<leader>mA',         -- Select all in visual selection
       }
-      
+
       -- Disable default mappings that might conflict
       vim.g.VM_default_mappings = 0
-      
+
       -- Theme settings
       vim.g.VM_theme = 'iceblue'
-      
+
       -- Show messages
       vim.g.VM_verbose = 0
-      
+
       -- Enable undo/redo
       vim.g.VM_maps["Undo"] = 'u'
       vim.g.VM_maps["Redo"] = '<C-r>'
-      
+
       -- Disable VM in specific file types to avoid conflicts
       vim.g.VM_set_statusline = 0
       vim.g.VM_silent_exit = 1
-      
+
       -- Create autocmd to disable VM in nvim-tree and other file explorers
       vim.api.nvim_create_autocmd("FileType", {
         pattern = { "NvimTree", "neo-tree", "oil", "dirvish", "fern" },
@@ -305,8 +345,8 @@ return {
       -- Setup mason-nvim-dap for automatic adapter installation
       require("mason-nvim-dap").setup({
         ensure_installed = {
-          "node2",        -- JavaScript/TypeScript
-          "codelldb",     -- Rust/C/C++
+          "node2",             -- JavaScript/TypeScript
+          "codelldb",          -- Rust/C/C++
           "php-debug-adapter", -- PHP
         },
         automatic_installation = true,
