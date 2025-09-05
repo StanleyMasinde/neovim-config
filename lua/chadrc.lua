@@ -9,7 +9,7 @@ local M = {}
 local function get_system_theme()
   local handle = io.popen("defaults read -g AppleInterfaceStyle 2>/dev/null")
   if not handle then
-    return "vscode_light" -- Default to light theme if command fails
+    return "one_light" -- Default to light theme if command fails
   end
 
   local result = handle:read("*l")
@@ -18,15 +18,15 @@ local function get_system_theme()
   -- If AppleInterfaceStyle is "Dark", system is in dark mode
   -- If the command fails or returns empty, system is in light mode
   if result and result:match("Dark") then
-    return "vscode_dark"
+    return "onedark"
   else
-    return "vscode_light"
+    return "one_light"
   end
 end
 
 M.base46 = {
   theme = get_system_theme(),
-  theme_toggle = { "vscode_dark", "vscode_light" },
+  theme_toggle = { "onedark", "one_light" },
   hl_override = {
     Comment = { italic = true },
     ["@comment"] = { italic = true },
