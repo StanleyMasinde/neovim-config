@@ -1,3 +1,5 @@
+local vim = vim
+
 return {
     {
         "stevearc/conform.nvim",
@@ -12,6 +14,23 @@ return {
             date_format = "%r",
             virtual_text_column = 1,
         },
+    },
+
+    {
+        "lewis6991/gitsigns.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        dependencies = { "nvim-lua/plenary.nvim" },
+        config = function()
+            require("plugins.configs.gitsigns")
+        end,
+    },
+    {
+        "rebelot/heirline.nvim",
+        event = "VeryLazy",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        config = function()
+            require("plugins.configs.heirline")
+        end,
     },
     {
         "kdheepak/lazygit.nvim",

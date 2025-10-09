@@ -1,3 +1,4 @@
+local vim = vim
 local opt = vim.opt
 local g = vim.g
 
@@ -46,3 +47,7 @@ opt.foldenable = false
 -- Leader
 g.mapleader = " "
 g.maplocalleader = ","
+
+vim.o.laststatus = 3
+vim.o.showmode = false
+vim.o.ruler = false
