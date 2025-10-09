@@ -24,7 +24,6 @@ map("n", "<leader>tb", "<cmd>Neotree buffers<cr>", { desc = "Show open buffers" 
 
 -- Legacy mappings.
 -- I will update them to match the new ethos
-map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
 -- My mapping for LSP functions.
