@@ -1,4 +1,3 @@
--- Detect if certain tools are available in the project
 local function has_file(file)
   local f = io.open(file, "r")
   if f then

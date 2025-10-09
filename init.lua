@@ -1,36 +1,36 @@
-vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
-vim.g.mapleader = " "
-
--- bootstrap lazy and all plugins
-local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
-if not vim.uv.fs_stat(lazypath) then
-  local repo = "https://github.com/folke/lazy.nvim.git"
-  vim.fn.system { "git", "clone", "--filter=blob:none", repo, "--branch=stable", lazypath }
+if vim.loader then
+    vim.loader.enable()
 end
 
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.uv.fs_stat(lazypath) then
+    vim.fn.system({
+        "git", "clone", "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", lazypath,
+    })
+end
 vim.opt.rtp:prepend(lazypath)
-local lazy_config = require "configs.lazy"
 
-require("lazy").setup({
-  {
-    "NvChad/NvChad",
-    lazy = false,
-    branch = "v2.5",
-    import = "nvchad.plugins",
-  },
-  { import = "plugins" },
-}, lazy_config)
+require("core.options")
+require("core.keymaps")
+require("core.autocmds")
+require("core.cmds")
+
+require("lazy").setup("plugins", {
+    ui = { border = "rounded" },
+    change_detection = { enabled = true, notify = false },
+})
 
 
--- Optional extras
-require("gitblame").setup {}
-
-dofile(vim.g.base46_cache .. "defaults")
-dofile(vim.g.base46_cache .. "statusline")
-
-require "options"
-require "autocmds"
-
-vim.schedule(function()
-  require "mappings"
-end)
+vim.diagnostic.config({
+    virtual_text = {
+        prefix = "●", -- small dot looks clean
+        spacing = 2,
+        source = "if_many", -- show source name if multiple
+    },
+    signs = true,
+    underline = true,
+    update_in_insert = false, -- don’t spam while typing
+    severity_sort = true,
+})
