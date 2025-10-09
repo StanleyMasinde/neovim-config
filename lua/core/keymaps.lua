@@ -18,6 +18,10 @@ map("n", "N", "Nzzzv", opts)
 map("n", "<leader>sv", "<cmd>source $MYVIMRC<cr>", { desc = "Reload config" })
 map("n", "<leader>rl", "<cmd>LspRestart<cr>", { desc = "Restart LSP" })
 
+-- Tree
+map("n", "<leader>e", "<cmd>Neotree float<cr>", { desc = "Focus File Tree" })
+map("n", "<leader>tb", "<cmd>Neotree buffers<cr>", { desc = "Show open buffers" })
+
 -- Legacy mappings.
 -- I will update them to match the new ethos
 map("n", ";", ":", { desc = "CMD enter command mode" })
