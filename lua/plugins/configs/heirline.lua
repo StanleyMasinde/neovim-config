@@ -57,7 +57,7 @@ local statusline = {
             local added = gitsigns.added or 0
             local changed = gitsigns.changed or 0
             local removed = gitsigns.removed or 0
-            return string.format("  %s +%d ~%d -%d ", branch, added, changed, removed)
+            return string.format("  %s (+%d ~%d -%d) ", branch, added, changed, removed)
         end,
         hl = { fg = "yellow", bg = "black" },
     },

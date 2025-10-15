@@ -10,11 +10,6 @@ gitsigns.setup({
     },
     numhl = false,
     linehl = false,
-    keymaps = {
-        -- Navigation
-        { mode = "n", ["]c"] = { expr = true, "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'" } },
-        { mode = "n", ["[c"] = { expr = true, "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'" } },
-    },
     watch_gitdir = { interval = 1000 },
     attach_to_untracked = true,
     current_line_blame = false,
