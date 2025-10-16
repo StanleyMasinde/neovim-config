@@ -15,8 +15,13 @@ return {
             virtual_text_column = 1,
         },
     },
-
-
+    {
+        'goolord/alpha-nvim',
+        dependencies = { 'echasnovski/mini.icons' },
+        config = function()
+            require 'alpha'.setup(require 'alpha.themes.startify'.config)
+        end
+    },
     {
         "nvim-neo-tree/neo-tree.nvim",
         branch = "v3.x",
@@ -58,11 +63,6 @@ return {
         "catppuccin/nvim",
         name = "catppuccin",
         priority = 1000,
-        config = function()
-            local current_theme = vim.g.current_theme or 'catppuccin'
-            vim.o.background = next_theme == "catppuccin-latte" and "light" or "dark"
-            vim.cmd.colorscheme(current_theme)
-        end,
     },
     { 'wakatime/vim-wakatime',             lazy = false },
     {
