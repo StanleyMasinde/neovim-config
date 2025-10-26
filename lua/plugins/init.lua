@@ -92,50 +92,6 @@ return {
     { 'williamboman/mason.nvim',           config = true },
     { 'williamboman/mason-lspconfig.nvim', config = true },
     {
-        'neovim/nvim-lspconfig',
-        config = function()
-            -- Load Mason integration
-            require('mason').setup()
-            require('mason-lspconfig').setup({
-                ensure_installed = { 'rust_analyzer' },
-                automatic_installation = true,
-            })
-
-            local lspconfig = require('lspconfig')
-
-            -- Diagnostics visuals
-            vim.diagnostic.config({
-                virtual_text = true,
-                float = { border = 'rounded' },
-            })
-
-            -- Shared on_attach: keymaps, etc.
-            local on_attach = function(_, bufnr)
-                local opts = { buffer = bufnr, silent = true }
-                vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-                vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-                vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-                vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-                vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
-            end
-
-            -- Capabilities for Blink or nvim-cmp (we’ll hook blink later)
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-            -- rust-analyzer setup
-            lspconfig.rust_analyzer.setup({
-                on_attach = on_attach,
-                capabilities = capabilities,
-                settings = {
-                    ['rust-analyzer'] = {
-                        cargo = { allFeatures = true },
-                        checkOnSave = { command = 'clippy' },
-                    },
-                },
-            })
-        end
-    },
-    {
         "neovim/nvim-lspconfig",
         dependencies = {
             "williamboman/mason.nvim",
@@ -144,6 +100,39 @@ return {
         event = { "BufReadPre", "BufNewFile" },
         config = function()
             require("plugins.configs.lsp")
+        end,
+    },
+    {
+        'mrcjkb/rustaceanvim',
+        version = '^6',
+        lazy = false,
+    },
+    {
+        'saecki/crates.nvim',
+        tag = 'stable',
+        event = { "BufRead Cargo.toml" },
+        config = function()
+            require('crates').setup({
+                completion = {
+                    cmp = {
+                        enabled = false
+                    },
+                    crates = {
+                        enabled = true,
+                        max_results = 8,
+                        min_chars = 3,
+                    }
+                },
+                lsp = {
+                    enabled = true,
+                    on_attach = function(client, bufnr)
+                        vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+                    end,
+                    actions = true,
+                    completion = true,
+                    hover = true,
+                },
+            })
         end,
     },
     {
