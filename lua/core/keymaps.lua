@@ -22,6 +22,9 @@ map("n", "<leader>rl", "<cmd>LspRestart<cr>", { desc = "Restart LSP" })
 map("n", "<leader>e", "<cmd>Neotree float<cr>", { desc = "Focus File Tree" })
 map("n", "<leader>tb", "<cmd>Neotree buffers<cr>", { desc = "Show open buffers" })
 
+-- Telescope
+map("n", "<leader>fl", "<cmd>Telescope live_grep<cr>", {desc = "Telescope live grep"})
+
 -- Legacy mappings.
 -- I will update them to match the new ethos
 map("i", "jk", "<ESC>")
