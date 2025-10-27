@@ -23,7 +23,14 @@ map("n", "<leader>e", "<cmd>Neotree float<cr>", { desc = "Focus File Tree" })
 map("n", "<leader>tb", "<cmd>Neotree buffers<cr>", { desc = "Show open buffers" })
 
 -- Telescope
-map("n", "<leader>fl", "<cmd>Telescope live_grep<cr>", {desc = "Telescope live grep"})
+map("n", "<leader>fl", "<cmd>Telescope live_grep<cr>", { desc = "Telescope live grep" })
+map("n", "<leader>fd", "<cmd>Telescope diagnostics<cr>", { desc = "Telescope diagnostics" })
+
+-- LuxTerminal
+map("n", "<leader>tt", "<cmd>LuxtermToggle<cr>", { desc = "Luxterm toggle" })
+
+-- Theme
+map("n", "<leader>tT", "<cmd>ToggleTheme<CR>", { desc = "Toggle theme" })
 
 -- Legacy mappings.
 -- I will update them to match the new ethos
@@ -73,8 +80,6 @@ map(
 
 -- Theme sync mapping
 map("n", "<leader>ts", "<cmd>SyncTheme<CR>", { desc = "Sync theme with system" })
-
-map("n", "<leader>tt", "<cmd>ToggleTheme<CR>", { desc = "Toggle theme" })
 
 -- Git mappings
 map("n", "<leader>gg", "<cmd>LazyGit<CR>", { desc = "LazyGit" })
