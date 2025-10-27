@@ -5,6 +5,14 @@
 <a href="https://dotfyle.com/StanleyMasinde/neovim-config"><img src="https://dotfyle.com/StanleyMasinde/neovim-config/badges/plugin-manager?style=flat" /></a>
 
 
+> [!IMPORTANT]
+> Please use the OS packahe manager to install rust-analyzer. This is because rustacean-vim confilicts with the Mason version of rust-analyzer.
+> Check here on how to install it: https://rust-analyzer.github.io/book/rust_analyzer_binary.html.
+> More about the issue can be found [here](https://github.com/mrcjkb/rustaceanvim/discussions/94#discussion-5946041). You might find a better way to install it there.
+
+
+
+
 ## Install Instructions
 
  > Install requires Neovim 0.9+. Always review the code before installing a configuration.
