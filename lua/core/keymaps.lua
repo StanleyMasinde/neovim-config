@@ -34,59 +34,44 @@ map("i", "jk", "<ESC>")
 -- PHP specific: <space>pl runs PHPStan, <space>pf formats PHP files
 
 -- LSP mappings
-map("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<CR>",
-    { desc = "Go to definition" })
-map("n", "<leader>ac", "<cmd>lua vim.lsp.buf.code_action()<CR>",
-    { desc = "Code actions" })
-map("n", "<leader>er", "<cmd>lua vim.diagnostic.goto_next()<CR>",
-    { desc = "Next diagnostic" })
+map("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { desc = "Go to definition" })
+map("n", "<leader>ac", "<cmd>lua vim.lsp.buf.code_action()<CR>", { desc = "Code actions" })
+map("n", "<leader>er", "<cmd>lua vim.diagnostic.goto_next()<CR>", { desc = "Next diagnostic" })
 
 -- ESLint specific mappings
-map("n", "<leader>ef", "<cmd>EslintFixAll<CR>",
-    { desc = "ESLint fix all" })
-map("n", "<leader>el", "<cmd>lua require('lint').try_lint()<CR>",
-    { desc = "Run ESLint" })
+map("n", "<leader>ef", "<cmd>EslintFixAll<CR>", { desc = "ESLint fix all" })
+map("n", "<leader>el", "<cmd>lua require('lint').try_lint()<CR>", { desc = "Run ESLint" })
 
 -- PHP specific mappings
-map("n", "<leader>pl", "<cmd>lua require('lint').try_lint()<CR>",
-    { desc = "Run PHPStan" })
-map("n", "<leader>pf", "<cmd>lua require('conform').format({ lsp_fallback = true })<CR>",
-    { desc = "Format PHP file" })
+map("n", "<leader>pl", "<cmd>lua require('lint').try_lint()<CR>", { desc = "Run PHPStan" })
+map("n", "<leader>pf", "<cmd>lua require('conform').format({ lsp_fallback = true })<CR>", { desc = "Format PHP file" })
 
 -- Format file
-map("n", "<leader>fm", "<cmd>lua require('conform').format({ lsp_fallback = true })<CR>",
-    { desc = "Format file" })
+map("n", "<leader>fm", "<cmd>lua require('conform').format({ lsp_fallback = true })<CR>", { desc = "Format file" })
 
 -- DAP (Debugger) mappings
-map("n", "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<CR>",
-    { desc = "Toggle Breakpoint" })
-map("n", "<leader>dc", "<cmd>lua require('dap').continue()<CR>",
-    { desc = "Continue" })
-map("n", "<leader>dso", "<cmd>lua require('dap').step_over()<CR>",
-    { desc = "Step Over" })
-map("n", "<leader>dsi", "<cmd>lua require('dap').step_into()<CR>",
-    { desc = "Step Into" })
-map("n", "<leader>dsO", "<cmd>lua require('dap').step_out()<CR>",
-    { desc = "Step Out" })
-map("n", "<leader>dr", "<cmd>lua require('dap.repl').open()<CR>",
-    { desc = "Open REPL" })
-map("n", "<leader>dt", "<cmd>lua require('dapui').toggle()<CR>",
-    { desc = "Toggle DAP UI" })
-map("n", "<leader>dx", "<cmd>lua require('dap').terminate()<CR>",
-    { desc = "Terminate" })
-map("n", "<leader>dR", "<cmd>lua require('dap').restart()<CR>",
-    { desc = "Restart" })
+map("n", "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<CR>", { desc = "Toggle Breakpoint" })
+map("n", "<leader>dc", "<cmd>lua require('dap').continue()<CR>", { desc = "Continue" })
+map("n", "<leader>dso", "<cmd>lua require('dap').step_over()<CR>", { desc = "Step Over" })
+map("n", "<leader>dsi", "<cmd>lua require('dap').step_into()<CR>", { desc = "Step Into" })
+map("n", "<leader>dsO", "<cmd>lua require('dap').step_out()<CR>", { desc = "Step Out" })
+map("n", "<leader>dr", "<cmd>lua require('dap.repl').open()<CR>", { desc = "Open REPL" })
+map("n", "<leader>dt", "<cmd>lua require('dapui').toggle()<CR>", { desc = "Toggle DAP UI" })
+map("n", "<leader>dx", "<cmd>lua require('dap').terminate()<CR>", { desc = "Terminate" })
+map("n", "<leader>dR", "<cmd>lua require('dap').restart()<CR>", { desc = "Restart" })
 
 -- PHP-specific DAP mappings
-map("n", "<leader>dp", "<cmd>lua require('dap').run(require('dap').configurations.php[1])<CR>",
-    { desc = "Start PHP Xdebug listener" })
+map(
+  "n",
+  "<leader>dp",
+  "<cmd>lua require('dap').run(require('dap').configurations.php[1])<CR>",
+  { desc = "Start PHP Xdebug listener" }
+)
 
 -- Theme sync mapping
-map("n", "<leader>ts", "<cmd>SyncTheme<CR>",
-    { desc = "Sync theme with system" })
+map("n", "<leader>ts", "<cmd>SyncTheme<CR>", { desc = "Sync theme with system" })
 
-map("n", "<leader>tt", "<cmd>ToggleTheme<CR>",
-    { desc = "Toggle theme" })
+map("n", "<leader>tt", "<cmd>ToggleTheme<CR>", { desc = "Toggle theme" })
 
 -- Git mappings
 map("n", "<leader>gg", "<cmd>LazyGit<CR>", { desc = "LazyGit" })
@@ -102,8 +87,12 @@ map("n", "<leader>qd", "<cmd>lua require('persistence').stop()<CR>", { desc = "S
 
 -- Harpoon mappings
 map("n", "<leader>ha", "<cmd>lua require('harpoon'):list():add()<CR>", { desc = "Harpoon add file" })
-map("n", "<leader>hm", "<cmd>lua require('harpoon').ui:toggle_quick_menu(require('harpoon'):list())<CR>",
-    { desc = "Harpoon menu" })
+map(
+  "n",
+  "<leader>hm",
+  "<cmd>lua require('harpoon').ui:toggle_quick_menu(require('harpoon'):list())<CR>",
+  { desc = "Harpoon menu" }
+)
 map("n", "<leader>1", "<cmd>lua require('harpoon'):list():select(1)<CR>", { desc = "Harpoon file 1" })
 map("n", "<leader>2", "<cmd>lua require('harpoon'):list():select(2)<CR>", { desc = "Harpoon file 2" })
 map("n", "<leader>3", "<cmd>lua require('harpoon'):list():select(3)<CR>", { desc = "Harpoon file 3" })
@@ -113,17 +102,35 @@ map("n", "<leader>4", "<cmd>lua require('harpoon'):list():select(4)<CR>", { desc
 map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<CR>", { desc = "Diagnostics (Trouble)" })
 map("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>", { desc = "Buffer Diagnostics (Trouble)" })
 map("n", "<leader>cs", "<cmd>Trouble symbols toggle focus=false<CR>", { desc = "Symbols (Trouble)" })
-map("n", "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<CR>",
-    { desc = "LSP Definitions / references / ... (Trouble)" })
+map(
+  "n",
+  "<leader>cl",
+  "<cmd>Trouble lsp toggle focus=false win.position=right<CR>",
+  { desc = "LSP Definitions / references / ... (Trouble)" }
+)
 
 -- Enhanced code actions
 map("n", "<leader>ca", "<cmd>CodeActionMenu<CR>", { desc = "Code Action Menu" })
 
 -- Refactoring
-map("v", "<leader>re", "<cmd>lua require('refactoring').refactor('Extract Function')<CR>", { desc = "Extract Function" })
-map("v", "<leader>rf", "<cmd>lua require('refactoring').refactor('Extract Function To File')<CR>",
-    { desc = "Extract Function To File" })
-map("v", "<leader>rv", "<cmd>lua require('refactoring').refactor('Extract Variable')<CR>", { desc = "Extract Variable" })
+map(
+  "v",
+  "<leader>re",
+  "<cmd>lua require('refactoring').refactor('Extract Function')<CR>",
+  { desc = "Extract Function" }
+)
+map(
+  "v",
+  "<leader>rf",
+  "<cmd>lua require('refactoring').refactor('Extract Function To File')<CR>",
+  { desc = "Extract Function To File" }
+)
+map(
+  "v",
+  "<leader>rv",
+  "<cmd>lua require('refactoring').refactor('Extract Variable')<CR>",
+  { desc = "Extract Variable" }
+)
 map("v", "<leader>ri", "<cmd>lua require('refactoring').refactor('Inline Variable')<CR>", { desc = "Inline Variable" })
 
 -- Multi-cursor mappings (vim-visual-multi) - for which-key display
