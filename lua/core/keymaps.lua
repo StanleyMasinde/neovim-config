@@ -32,6 +32,10 @@ map("n", "<leader>tt", "<cmd>LuxtermToggle<cr>", { desc = "Luxterm toggle" })
 -- Theme
 map("n", "<leader>tT", "<cmd>ToggleTheme<CR>", { desc = "Toggle theme" })
 
+-- Buffers
+map("n", "<leader>bn", "<cmd>BufferNext<CR>", { desc = "Go to next buffer." })
+map("n", "<leader>bp", "<cmd>BufferPrevious<CR>", { desc = "Go to previous buffer buffer." })
+
 -- Legacy mappings.
 -- I will update them to match the new ethos
 map("i", "jk", "<ESC>")
