@@ -98,7 +98,7 @@ require("catppuccin").setup {
 }
 
 -- setup must be called before loading
-vim.cmd.colorscheme "catppuccin"
+vim.cmd.colorscheme "wildcharm"
 
 vim.diagnostic.config {
   virtual_text = {
