@@ -51,3 +51,6 @@ g.maplocalleader = ","
 vim.o.laststatus = 3
 vim.o.showmode = false
 vim.o.ruler = false
+
+-- To use local config
+vim.o.exrc = true

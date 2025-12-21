@@ -37,6 +37,16 @@ local ts_ls_config = {
   },
   filetypes = tsserver_filetypes,
 }
+-- Rust Analyzer
+vim.lsp.config("rust_analyzer", {
+  settings = {
+    ["rust-analyzer"] = {
+      diagnostics = {
+        enable = true,
+      },
+    },
+  },
+})
 
 -- If you are on most recent `nvim-lspconfig`
 local vue_ls_config = {}
@@ -45,6 +55,6 @@ local vue_ls_config = {}
 vim.lsp.config("vtsls", vtsls_config)
 vim.lsp.config("vue_ls", vue_ls_config)
 vim.lsp.config("ts_ls", ts_ls_config)
-vim.lsp.enable { "vtsls", "vue_ls" } -- If using `ts_ls` replace `vtsls` to `ts_ls`
+vim.lsp.enable { "vtsls", "vue_ls", "rust_analyzer" } -- If using `ts_ls` replace `vtsls` to `ts_ls`
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
