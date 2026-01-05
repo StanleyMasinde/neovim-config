@@ -10,6 +10,9 @@
 > Check here on how to install it: https://rust-analyzer.github.io/book/rust_analyzer_binary.html.
 > More about the issue can be found [here](https://github.com/mrcjkb/rustaceanvim/discussions/94#discussion-5946041). You might find a better way to install it there.
 
+> [!IMPORTANT]
+> To use Telescope features, ripgrep is required.
+
 
 
 
