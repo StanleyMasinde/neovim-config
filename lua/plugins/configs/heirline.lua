@@ -1,6 +1,85 @@
 local heirline = require "heirline"
 local conditions = require "heirline.conditions"
-local utils = require "heirline.utils"
+
+local default_diag_icons = {
+  [vim.diagnostic.severity.ERROR] = "E",
+  [vim.diagnostic.severity.WARN] = "W",
+  [vim.diagnostic.severity.INFO] = "I",
+  [vim.diagnostic.severity.HINT] = "H",
+}
+
+local function get_diag_icon(severity)
+  local cfg = vim.diagnostic.config() or {}
+  local signs = cfg.signs or {}
+  local text = signs.text or {}
+  return text[severity] or default_diag_icons[severity]
+end
+
+local function get_hl_fg(group, fallback)
+  local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = group, link = false })
+  if ok and hl and hl.fg then
+    return string.format("#%06x", hl.fg)
+  end
+  return fallback
+end
+
+local Diagnostics = {
+
+  condition = conditions.has_diagnostics,
+  init = function(self)
+    self.error_icon = get_diag_icon(vim.diagnostic.severity.ERROR)
+    self.warn_icon = get_diag_icon(vim.diagnostic.severity.WARN)
+    self.info_icon = get_diag_icon(vim.diagnostic.severity.INFO)
+    self.hint_icon = get_diag_icon(vim.diagnostic.severity.HINT)
+
+    self.errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
+    self.warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
+    self.hints = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
+    self.info = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
+  end,
+
+  update = { "DiagnosticChanged", "BufEnter" },
+
+  {
+    provider = "![",
+  },
+  {
+    provider = function(self)
+      -- 0 is just another output, we can decide to print it or not!
+      return self.errors > 0 and (self.error_icon .. self.errors .. " ")
+    end,
+    hl = function()
+      return { fg = get_hl_fg("DiagnosticError", "#f7768e") }
+    end,
+  },
+  {
+    provider = function(self)
+      return self.warnings > 0 and (self.warn_icon .. self.warnings .. " ")
+    end,
+    hl = function()
+      return { fg = get_hl_fg("DiagnosticWarn", "#ffdf5d") }
+    end,
+  },
+  {
+    provider = function(self)
+      return self.info > 0 and (self.info_icon .. self.info .. " ")
+    end,
+    hl = function()
+      return { fg = get_hl_fg("DiagnosticInfo", "#2ac3de") }
+    end,
+  },
+  {
+    provider = function(self)
+      return self.hints > 0 and (self.hint_icon .. self.hints)
+    end,
+    hl = function()
+      return { fg = get_hl_fg("DiagnosticHint", "#7aa2f7") }
+    end,
+  },
+  {
+    provider = "]",
+  },
+}
 
 -- Mode highlights
 local mode_colors = {
@@ -62,45 +141,14 @@ local statusline = {
     hl = { fg = "yellow", bg = "black" },
   },
 
-  -- LSP diagnostics
-  {
-    provider = function()
-      local diag = vim.diagnostic.get(0)
-      local counts = { E = 0, W = 0, H = 0, I = 0 }
-      for _, d in ipairs(diag) do
-        if d.severity == vim.diagnostic.severity.ERROR then
-          counts.E = counts.E + 1
-        elseif d.severity == vim.diagnostic.severity.WARN then
-          counts.W = counts.W + 1
-        elseif d.severity == vim.diagnostic.severity.HINT then
-          counts.H = counts.H + 1
-        elseif d.severity == vim.diagnostic.severity.INFO then
-          counts.I = counts.I + 1
-        end
-      end
-      local parts = {}
-      if counts.E > 0 then
-        table.insert(parts, "" .. counts.E)
-      end
-      if counts.W > 0 then
-        table.insert(parts, "" .. counts.W)
-      end
-      if counts.H > 0 then
-        table.insert(parts, "" .. counts.H)
-      end
-      if counts.I > 0 then
-        table.insert(parts, "" .. counts.I)
-      end
-      return table.concat(parts, " ")
-    end,
-    hl = { fg = "red", bold = true },
-  },
-
   -- Cursor position
   {
-    provider = "%l:%c",
+    provider = "%l:%c ",
     hl = { fg = "white", bg = "black" },
   },
+
+  -- LSP diagnostics
+  Diagnostics,
 }
 
 heirline.setup {
