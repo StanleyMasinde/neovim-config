@@ -81,7 +81,12 @@ require("catppuccin").setup {
     },
   },
   color_overrides = {},
-  custom_highlights = {},
+  custom_highlights = function(colors)
+    return {
+      -- Make inline blame readable while preserving theme palette in both modes.
+      GitSignsCurrentLineBlame = { fg = colors.subtext0, bg = "NONE", italic = true },
+    }
+  end,
   default_integrations = true,
   auto_integrations = false,
   integrations = {
