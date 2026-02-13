@@ -54,3 +54,6 @@ vim.o.ruler = false
 
 -- To use local config
 vim.o.exrc = true
+
+-- Disable logging
+vim.lsp.set_log_level("off") -- or "error"
