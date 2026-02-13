@@ -52,10 +52,6 @@ map("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { desc = "Go to 
 map("n", "<leader>ac", "<cmd>lua vim.lsp.buf.code_action()<CR>", { desc = "Code actions" })
 map("n", "<leader>er", "<cmd>lua vim.diagnostic.goto_next()<CR>", { desc = "Next diagnostic" })
 
--- ESLint specific mappings
-map("n", "<leader>ef", "<cmd>EslintFixAll<CR>", { desc = "ESLint fix all" })
-map("n", "<leader>el", "<cmd>lua require('lint').try_lint()<CR>", { desc = "Run ESLint" })
-
 -- PHP specific mappings
 map("n", "<leader>pl", "<cmd>lua require('lint').try_lint()<CR>", { desc = "Run PHPStan" })
 map("n", "<leader>pf", "<cmd>lua require('conform').format({ lsp_fallback = true })<CR>", { desc = "Format PHP file" })
