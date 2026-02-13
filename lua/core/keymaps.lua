@@ -87,12 +87,6 @@ map("n", "<leader>gs", "<cmd>Git<CR>", { desc = "Git status" })
 map("n", "<leader>gb", "<cmd>Git blame<CR>", { desc = "Git blame" })
 map("n", "<leader>gF", "<cmd>Gdiffsplit<CR>", { desc = "Git diff split" })
 
--- Project and session management
-map("n", "<leader>fp", "<cmd>Telescope projects<CR>", { desc = "Find projects" })
-map("n", "<leader>qs", "<cmd>lua require('persistence').load()<CR>", { desc = "Restore session" })
-map("n", "<leader>ql", "<cmd>lua require('persistence').load({ last = true })<CR>", { desc = "Restore last session" })
-map("n", "<leader>qd", "<cmd>lua require('persistence').stop()<CR>", { desc = "Stop session recording" })
-
 -- Harpoon mappings
 map("n", "<leader>ha", "<cmd>lua require('harpoon'):list():add()<CR>", { desc = "Harpoon add file" })
 map(
