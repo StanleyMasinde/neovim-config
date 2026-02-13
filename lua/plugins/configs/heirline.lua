@@ -23,9 +23,57 @@ local function get_hl_fg(group, fallback)
   return fallback
 end
 
+local function get_hl_bg(group, fallback)
+  local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = group, link = false })
+  if ok and hl and hl.bg then
+    return string.format("#%06x", hl.bg)
+  end
+  return fallback
+end
+
+local function hex_to_rgb(hex)
+  local h = hex:gsub("#", "")
+  return tonumber(h:sub(1, 2), 16), tonumber(h:sub(3, 4), 16), tonumber(h:sub(5, 6), 16)
+end
+
+local function relative_luminance(hex)
+  local r, g, b = hex_to_rgb(hex)
+  local function channel(c)
+    c = c / 255
+    if c <= 0.03928 then
+      return c / 12.92
+    end
+    return ((c + 0.055) / 1.055) ^ 2.4
+  end
+  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b)
+end
+
+local function readable_fg(bg_hex)
+  local l = relative_luminance(bg_hex)
+  local black_contrast = (l + 0.05) / 0.05
+  local white_contrast = 1.05 / (l + 0.05)
+  return black_contrast >= white_contrast and "#11111b" or "#eff1f5"
+end
+
+local function statusline_fallbacks()
+  if vim.o.background == "dark" then
+    return { fg = "#cdd6f4", bg = "#313244" }
+  end
+  return { fg = "#4c4f69", bg = "#ccd0da" }
+end
+
+local function statusline_hl()
+  local fb = statusline_fallbacks()
+  return {
+    fg = get_hl_fg("StatusLine", fb.fg),
+    bg = get_hl_bg("StatusLine", fb.bg),
+  }
+end
+
 local Diagnostics = {
 
   condition = conditions.has_diagnostics,
+  hl = statusline_hl,
   init = function(self)
     self.error_icon = get_diag_icon(vim.diagnostic.severity.ERROR)
     self.warn_icon = get_diag_icon(vim.diagnostic.severity.WARN)
@@ -48,7 +96,7 @@ local Diagnostics = {
       return self.errors > 0 and (self.error_icon .. self.errors .. " ")
     end,
     hl = function()
-      return { fg = get_hl_fg("DiagnosticError", "#f7768e") }
+      return { fg = get_hl_fg("DiagnosticError", "#d20f39") }
     end,
   },
   {
@@ -56,7 +104,7 @@ local Diagnostics = {
       return self.warnings > 0 and (self.warn_icon .. self.warnings .. " ")
     end,
     hl = function()
-      return { fg = get_hl_fg("DiagnosticWarn", "#ffdf5d") }
+      return { fg = get_hl_fg("DiagnosticWarn", "#df8e1d") }
     end,
   },
   {
@@ -64,7 +112,7 @@ local Diagnostics = {
       return self.info > 0 and (self.info_icon .. self.info .. " ")
     end,
     hl = function()
-      return { fg = get_hl_fg("DiagnosticInfo", "#2ac3de") }
+      return { fg = get_hl_fg("DiagnosticInfo", "#1e66f5") }
     end,
   },
   {
@@ -72,7 +120,7 @@ local Diagnostics = {
       return self.hints > 0 and (self.hint_icon .. self.hints)
     end,
     hl = function()
-      return { fg = get_hl_fg("DiagnosticHint", "#7aa2f7") }
+      return { fg = get_hl_fg("DiagnosticHint", "#179299") }
     end,
   },
   {
@@ -81,15 +129,15 @@ local Diagnostics = {
 }
 
 -- Mode highlights
-local mode_colors = {
-  n = { fg = "#000000", bg = "#9ece6a", bold = true }, -- NORMAL: green
-  i = { fg = "#000000", bg = "#7aa2f7", bold = true }, -- INSERT: blue
-  v = { fg = "#000000", bg = "#bb9af7", bold = true }, -- VISUAL: purple
-  V = { fg = "#000000", bg = "#bb9af7", bold = true }, -- V-LINE
-  ["\22"] = { fg = "#000000", bg = "#bb9af7", bold = true }, -- V-BLOCK
-  c = { fg = "#000000", bg = "#f7768e", bold = true }, -- COMMAND: red
-  R = { fg = "#000000", bg = "#ff9e64", bold = true }, -- REPLACE: orange
-  t = { fg = "#000000", bg = "#2ac3de", bold = true }, -- TERMINAL: cyan
+local mode_bg = {
+  n = "#9ece6a", -- NORMAL: green
+  i = "#7aa2f7", -- INSERT: blue
+  v = "#bb9af7", -- VISUAL: purple
+  V = "#bb9af7", -- V-LINE
+  ["\22"] = "#bb9af7", -- V-BLOCK
+  c = "#f7768e", -- COMMAND: red
+  R = "#ff9e64", -- REPLACE: orange
+  t = "#2ac3de", -- TERMINAL: cyan
 }
 
 -- Mode names
@@ -114,7 +162,13 @@ local statusline = {
     end,
     hl = function()
       local m = vim.fn.mode()
-      return mode_colors[m] or { fg = "white", bg = "black", bold = true }
+      local bg = mode_bg[m]
+      if not bg then
+        local hl = statusline_hl()
+        hl.bold = true
+        return hl
+      end
+      return { fg = readable_fg(bg), bg = bg, bold = true }
     end,
   },
 
@@ -123,7 +177,7 @@ local statusline = {
     provider = function()
       return " " .. vim.fn.expand "%:t" .. " "
     end,
-    hl = { fg = "white", bg = "darkblue" },
+    hl = statusline_hl,
   },
 
   -- Git branch + diff (requires gitsigns)
@@ -137,13 +191,19 @@ local statusline = {
       local removed = gitsigns.removed or 0
       return string.format("  %s (+%d ~%d -%d) ", branch, added, changed, removed)
     end,
-    hl = { fg = "yellow", bg = "black" },
+    hl = function()
+      local base = statusline_hl()
+      return {
+        fg = get_hl_fg("Function", "#df8e1d"),
+        bg = base.bg,
+      }
+    end,
   },
 
   -- Cursor position
   {
     provider = "%l:%c ",
-    hl = { fg = "white", bg = "black" },
+    hl = statusline_hl,
   },
 
   -- LSP diagnostics
@@ -152,7 +212,4 @@ local statusline = {
 
 heirline.setup {
   statusline = statusline,
-  opts = {
-    colors = { green = "#9ece6a", darkblue = "#1e1e2e", yellow = "#ffdf5d", red = "#f7768e", white = "#ffffff" },
-  },
 }
