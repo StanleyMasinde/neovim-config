@@ -87,19 +87,6 @@ map("n", "<leader>gs", "<cmd>Git<CR>", { desc = "Git status" })
 map("n", "<leader>gb", "<cmd>Git blame<CR>", { desc = "Git blame" })
 map("n", "<leader>gF", "<cmd>Gdiffsplit<CR>", { desc = "Git diff split" })
 
--- Harpoon mappings
-map("n", "<leader>ha", "<cmd>lua require('harpoon'):list():add()<CR>", { desc = "Harpoon add file" })
-map(
-  "n",
-  "<leader>hm",
-  "<cmd>lua require('harpoon').ui:toggle_quick_menu(require('harpoon'):list())<CR>",
-  { desc = "Harpoon menu" }
-)
-map("n", "<leader>1", "<cmd>lua require('harpoon'):list():select(1)<CR>", { desc = "Harpoon file 1" })
-map("n", "<leader>2", "<cmd>lua require('harpoon'):list():select(2)<CR>", { desc = "Harpoon file 2" })
-map("n", "<leader>3", "<cmd>lua require('harpoon'):list():select(3)<CR>", { desc = "Harpoon file 3" })
-map("n", "<leader>4", "<cmd>lua require('harpoon'):list():select(4)<CR>", { desc = "Harpoon file 4" })
-
 -- Trouble diagnostics
 map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<CR>", { desc = "Diagnostics (Trouble)" })
 map("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>", { desc = "Buffer Diagnostics (Trouble)" })
