@@ -1,11 +1,93 @@
 local map = vim.keymap.set
 local opts = { silent = true, noremap = true }
 
+local function get_comment_parts()
+  local commentstring = vim.bo.commentstring
+  if commentstring == "" or not commentstring:find "%%s" then
+    vim.notify("No valid commentstring set for this filetype", vim.log.levels.WARN)
+    return nil
+  end
+
+  local prefix_raw, suffix_raw = commentstring:match "^(.*)%%s(.*)$"
+  local prefix = vim.trim(prefix_raw or "")
+  local suffix = vim.trim(suffix_raw or "")
+  if prefix == "" then
+    vim.notify("Unsupported commentstring for toggle", vim.log.levels.WARN)
+    return nil
+  end
+
+  return prefix, suffix
+end
+
+local function is_commented(content, prefix, suffix)
+  local commented = content:match("^" .. vim.pesc(prefix) .. "%s?") ~= nil
+  if commented and suffix ~= "" then
+    commented = content:match(vim.pesc(suffix) .. "%s*$") ~= nil
+  end
+  return commented
+end
+
+local function toggle_comment_range(start_lnum, end_lnum)
+  local prefix, suffix = get_comment_parts()
+  if not prefix then
+    return
+  end
+
+  local lines = vim.api.nvim_buf_get_lines(0, start_lnum - 1, end_lnum, false)
+  local nonblank_count = 0
+  local all_nonblank_commented = true
+
+  for _, line in ipairs(lines) do
+    local _, content = line:match "^(%s*)(.*)$"
+    if content ~= "" then
+      nonblank_count = nonblank_count + 1
+      if not is_commented(content, prefix, suffix) then
+        all_nonblank_commented = false
+      end
+    end
+  end
+
+  local should_uncomment = nonblank_count > 0 and all_nonblank_commented
+  for i, line in ipairs(lines) do
+    local indent, content = line:match "^(%s*)(.*)$"
+    if content ~= "" then
+      if should_uncomment then
+        content = content:gsub("^" .. vim.pesc(prefix) .. "%s?", "", 1)
+        if suffix ~= "" then
+          content = content:gsub("%s*" .. vim.pesc(suffix) .. "%s*$", "", 1)
+        end
+      else
+        if suffix ~= "" then
+          content = prefix .. " " .. content .. " " .. suffix
+        else
+          content = prefix .. " " .. content
+        end
+      end
+      lines[i] = (indent or "") .. content
+    end
+  end
+
+  vim.api.nvim_buf_set_lines(0, start_lnum - 1, end_lnum, false, lines)
+end
+
+local function toggle_line_comment()
+  local line = vim.api.nvim_win_get_cursor(0)[1]
+  toggle_comment_range(line, line)
+end
+
 -- Basics
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save file" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit window" })
 map("n", "<leader>h", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight" })
-map("n", "<leader>e", "<cmd>Explore<cr>", { desc = "Open file explorer" })
+map("n", "<leader>/", toggle_line_comment, { desc = "Toggle comment on current line" })
+map("x", "<leader>/", function()
+  local start_lnum = vim.fn.getpos "'<"[2]
+  local end_lnum = vim.fn.getpos "'>"[2]
+  if start_lnum > end_lnum then
+    start_lnum, end_lnum = end_lnum, start_lnum
+  end
+  toggle_comment_range(start_lnum, end_lnum)
+end, { desc = "Toggle comment on selection" })
 
 -- Movement
 map("n", "J", "mzJ`z", opts)
@@ -34,7 +116,7 @@ map("n", "<leader>tT", "<cmd>ToggleTheme<CR>", { desc = "Toggle theme" })
 
 -- Buffers
 map("n", "<leader>bn", "<cmd>BufferNext<CR>", { desc = "Go to next buffer." })
-map("n", "<leader>bp", "<cmd>BufferPrevious<CR>", { desc = "Go to previous buffer buffer." })
+map("n", "<leader>bp", "<cmd>BufferPrevious<CR>", { desc = "Go to previous buffer." })
 
 -- Legacy mappings.
 -- I will update them to match the new ethos
@@ -45,79 +127,25 @@ map("i", "jk", "<ESC>")
 -- E.g <space>gd goes to variable definition,
 -- <space>ac will show code actions
 -- <space>er will jump to the next error and show it in details
--- PHP specific: <space>pl runs PHPStan, <space>pf formats PHP files
+-- PHP specific: <space>pf formats PHP files
 
 -- LSP mappings
-map("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { desc = "Go to definition" })
-map("n", "<leader>ac", "<cmd>lua vim.lsp.buf.code_action()<CR>", { desc = "Code actions" })
-map("n", "<leader>er", "<cmd>lua vim.diagnostic.goto_next()<CR>", { desc = "Next diagnostic" })
+map("n", "<leader>gd", vim.lsp.buf.definition, { desc = "Go to definition" })
+map("n", "<leader>ac", vim.lsp.buf.code_action, { desc = "Code actions" })
+map("n", "<leader>er", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
 
--- PHP specific mappings
-map("n", "<leader>pl", "<cmd>lua require('lint').try_lint()<CR>", { desc = "Run PHPStan" })
-map("n", "<leader>pf", "<cmd>lua require('conform').format({ lsp_fallback = true })<CR>", { desc = "Format PHP file" })
+-- PHP specific mapping
+map("n", "<leader>pf", function()
+  require("conform").format { lsp_fallback = true }
+end, { desc = "Format PHP file" })
 
 -- Format file
-map("n", "<leader>fm", "<cmd>lua require('conform').format({ lsp_fallback = true })<CR>", { desc = "Format file" })
-
--- DAP (Debugger) mappings
-map("n", "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<CR>", { desc = "Toggle Breakpoint" })
-map("n", "<leader>dc", "<cmd>lua require('dap').continue()<CR>", { desc = "Continue" })
-map("n", "<leader>dso", "<cmd>lua require('dap').step_over()<CR>", { desc = "Step Over" })
-map("n", "<leader>dsi", "<cmd>lua require('dap').step_into()<CR>", { desc = "Step Into" })
-map("n", "<leader>dsO", "<cmd>lua require('dap').step_out()<CR>", { desc = "Step Out" })
-map("n", "<leader>dr", "<cmd>lua require('dap.repl').open()<CR>", { desc = "Open REPL" })
-map("n", "<leader>dt", "<cmd>lua require('dapui').toggle()<CR>", { desc = "Toggle DAP UI" })
-map("n", "<leader>dx", "<cmd>lua require('dap').terminate()<CR>", { desc = "Terminate" })
-map("n", "<leader>dR", "<cmd>lua require('dap').restart()<CR>", { desc = "Restart" })
-
--- PHP-specific DAP mappings
-map(
-  "n",
-  "<leader>dp",
-  "<cmd>lua require('dap').run(require('dap').configurations.php[1])<CR>",
-  { desc = "Start PHP Xdebug listener" }
-)
+map("n", "<leader>fm", function()
+  require("conform").format { lsp_fallback = true }
+end, { desc = "Format file" })
 
 -- Theme sync mapping
 map("n", "<leader>ts", "<cmd>SyncTheme<CR>", { desc = "Sync theme with system" })
 
 -- Git mappings
 map("n", "<leader>gg", "<cmd>LazyGit<CR>", { desc = "LazyGit" })
-map("n", "<leader>gs", "<cmd>Git<CR>", { desc = "Git status" })
-map("n", "<leader>gb", "<cmd>Git blame<CR>", { desc = "Git blame" })
-map("n", "<leader>gF", "<cmd>Gdiffsplit<CR>", { desc = "Git diff split" })
-
--- Trouble diagnostics
-map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<CR>", { desc = "Diagnostics (Trouble)" })
-map("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>", { desc = "Buffer Diagnostics (Trouble)" })
-map("n", "<leader>cs", "<cmd>Trouble symbols toggle focus=false<CR>", { desc = "Symbols (Trouble)" })
-map(
-  "n",
-  "<leader>cl",
-  "<cmd>Trouble lsp toggle focus=false win.position=right<CR>",
-  { desc = "LSP Definitions / references / ... (Trouble)" }
-)
-
--- Enhanced code actions
-map("n", "<leader>ca", "<cmd>CodeActionMenu<CR>", { desc = "Code Action Menu" })
-
--- Refactoring
-map(
-  "v",
-  "<leader>re",
-  "<cmd>lua require('refactoring').refactor('Extract Function')<CR>",
-  { desc = "Extract Function" }
-)
-map(
-  "v",
-  "<leader>rf",
-  "<cmd>lua require('refactoring').refactor('Extract Function To File')<CR>",
-  { desc = "Extract Function To File" }
-)
-map(
-  "v",
-  "<leader>rv",
-  "<cmd>lua require('refactoring').refactor('Extract Variable')<CR>",
-  { desc = "Extract Variable" }
-)
-map("v", "<leader>ri", "<cmd>lua require('refactoring').refactor('Inline Variable')<CR>", { desc = "Inline Variable" })
