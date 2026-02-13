@@ -121,15 +121,3 @@ map(
   { desc = "Extract Variable" }
 )
 map("v", "<leader>ri", "<cmd>lua require('refactoring').refactor('Inline Variable')<CR>", { desc = "Inline Variable" })
-
--- Multi-cursor mappings (vim-visual-multi) - for which-key display
-map("n", "<leader>mf", "<Plug>(VM-Find-Under)", { desc = "Multi-cursor: Find word under cursor" })
-map("n", "<leader>ma", "<Plug>(VM-Select-All)", { desc = "Multi-cursor: Select all occurrences" })
-map("n", "<leader>mr", "<Plug>(VM-Start-Regex-Search)", { desc = "Multi-cursor: Regex search" })
-map("n", "<leader>mj", "<Plug>(VM-Add-Cursor-Down)", { desc = "Multi-cursor: Add cursor down" })
-map("n", "<leader>mk", "<Plug>(VM-Add-Cursor-Up)", { desc = "Multi-cursor: Add cursor up" })
-map("n", "<leader>mi", "<Plug>(VM-Add-Cursor-At-Pos)", { desc = "Multi-cursor: Add cursor at position" })
-map("n", "<leader>mx", "<Plug>(VM-Skip-Region)", { desc = "Multi-cursor: Skip current selection" })
-map("n", "<leader>mp", "<Plug>(VM-Remove-Region)", { desc = "Multi-cursor: Remove current selection" })
-map("v", "<leader>mv", "<Plug>(VM-Visual-Cursors)", { desc = "Multi-cursor: Visual to cursors" })
-map("v", "<leader>mA", "<Plug>(VM-Visual-All)", { desc = "Multi-cursor: Select all in visual" })
