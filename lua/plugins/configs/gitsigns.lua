@@ -12,5 +12,5 @@ gitsigns.setup {
   linehl = false,
   watch_gitdir = { interval = 1000 },
   attach_to_untracked = true,
-  current_line_blame = false,
+  current_line_blame = true,
 }

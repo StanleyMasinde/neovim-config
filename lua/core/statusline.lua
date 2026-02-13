@@ -36,7 +36,7 @@ function M.get()
   local mode = ("%s"):format(vim.api.nvim_get_mode().mode)
   local fname = vim.fn.expand "%:t"
   local git = vim.b.gitsigns_status or ""
-  local diag = lsp_diagnostics()
   local pos = string.format("%d:%d", vim.fn.line ".", vim.fn.col ".")
-  return table.concat({ " " .. mode .. " ", fname, " " .. git .. " ", diag, pos }, " | ")
+  local diag = lsp_diagnostics()
+  return table.concat({ " " .. mode .. " ", fname, " " .. git .. " ", pos, diag }, " | ")
 end
