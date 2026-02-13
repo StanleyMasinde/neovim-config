@@ -98,7 +98,7 @@ map("n", "N", "Nzzzv", opts)
 
 -- Quick editing shortcuts
 map("n", "<leader>sv", "<cmd>source $MYVIMRC<cr>", { desc = "Reload config" })
-map("n", "<leader>rl", "<cmd>LspRestart<cr>", { desc = "Restart LSP" })
+map("n", "<leader>rl", "<cmd>lsp restart<cr>", { desc = "Restart LSP" })
 
 -- Tree
 map("n", "<leader>e", "<cmd>Neotree float<cr>", { desc = "Focus File Tree" })

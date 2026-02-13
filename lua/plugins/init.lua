@@ -111,9 +111,6 @@ return {
         },
         lsp = {
           enabled = true,
-          on_attach = function(client, bufnr)
-            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-          end,
           actions = true,
           completion = true,
           hover = true,
