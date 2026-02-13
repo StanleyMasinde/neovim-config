@@ -70,6 +70,10 @@ local function statusline_hl()
   }
 end
 
+local function git_icon()
+  return ""
+end
+
 local Diagnostics = {
 
   condition = conditions.has_diagnostics,
@@ -183,31 +187,66 @@ local statusline = {
   -- Git branch + diff (requires gitsigns)
   {
     condition = conditions.is_git_repo,
-    provider = function()
+    init = function(self)
       local gitsigns = vim.b.gitsigns_status_dict or {}
-      local branch = gitsigns.head or ""
-      local added = gitsigns.added or 0
-      local changed = gitsigns.changed or 0
-      local removed = gitsigns.removed or 0
-      return string.format("  %s (+%d ~%d -%d) ", branch, added, changed, removed)
+      self.branch = gitsigns.head or ""
+      self.added = gitsigns.added or 0
+      self.changed = gitsigns.changed or 0
+      self.removed = gitsigns.removed or 0
     end,
-    hl = function()
-      local base = statusline_hl()
-      return {
-        fg = get_hl_fg("Function", "#df8e1d"),
-        bg = base.bg,
-      }
-    end,
-  },
-
-  -- Cursor position
-  {
-    provider = "%l:%c ",
-    hl = statusline_hl,
+    {
+      provider = function(self)
+        return string.format(" %s %s(", git_icon(), self.branch)
+      end,
+      hl = statusline_hl,
+    },
+    {
+      provider = function(self)
+        return "+" .. self.added
+      end,
+      hl = function()
+        local base = statusline_hl()
+        return { fg = get_hl_fg("DiffAdd", "#40a02b"), bg = base.bg }
+      end,
+    },
+    {
+      provider = function(self)
+        return "-" .. self.removed
+      end,
+      hl = function()
+        local base = statusline_hl()
+        return { fg = get_hl_fg("DiffDelete", "#d20f39"), bg = base.bg }
+      end,
+    },
+    {
+      provider = function(self)
+        return "~" .. self.changed
+      end,
+      hl = function()
+        local base = statusline_hl()
+        return { fg = get_hl_fg("DiffChange", "#df8e1d"), bg = base.bg }
+      end,
+    },
+    {
+      provider = ") ",
+      hl = statusline_hl,
+    },
   },
 
   -- LSP diagnostics
   Diagnostics,
+
+  -- Right align everything after this point
+  {
+    provider = "%=",
+    hl = statusline_hl,
+  },
+
+  -- Cursor position (far right)
+  {
+    provider = "%l:%c ",
+    hl = statusline_hl,
+  },
 }
 
 heirline.setup {

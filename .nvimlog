@@ -1,0 +1,5 @@
+WRN 2026-02-13T20:45:06.994 c/nvim.25563.0 server_start:199: Failed to start server: operation not permitted: /var/folders/h8/bxr9m4v119b7cn1zjb2jrp5c0000gn/T/nvim.stanley/NkqgGr/nvim.28823.0
+WRN 2026-02-13T20:46:26.601 c/nvim.25563.0 server_start:199: Failed to start server: operation not permitted: /var/folders/h8/bxr9m4v119b7cn1zjb2jrp5c0000gn/T/nvim.stanley/lMC6Oa/nvim.29408.0
+WRN 2026-02-13T20:47:43.009 c/nvim.25563.0 server_start:199: Failed to start server: operation not permitted: /var/folders/h8/bxr9m4v119b7cn1zjb2jrp5c0000gn/T/nvim.stanley/tzucej/nvim.29876.0
+WRN 2026-02-13T20:50:18.247 c/nvim.25563.0 server_start:199: Failed to start server: operation not permitted: /var/folders/h8/bxr9m4v119b7cn1zjb2jrp5c0000gn/T/nvim.stanley/drHbZG/nvim.30350.0
+WRN 2026-02-13T20:53:33.360 c/nvim.25563.0 server_start:199: Failed to start server: operation not permitted: /var/folders/h8/bxr9m4v119b7cn1zjb2jrp5c0000gn/T/nvim.stanley/dW9B6Y/nvim.31275.0
