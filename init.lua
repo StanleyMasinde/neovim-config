@@ -20,6 +20,12 @@ require "core.keymaps"
 require "core.autocmds"
 require "core.cmds"
 
+vim.filetype.add({
+  pattern = {
+    [".*%.blade%.php"] = "blade",
+  },
+})
+
 require("lazy").setup("plugins", {
   ui = { border = "rounded" },
   change_detection = { enabled = true, notify = false },

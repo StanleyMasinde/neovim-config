@@ -8,6 +8,7 @@ require'nvim-treesitter'.setup {
     "toml",
     "vim",
     "markdown",
+    "blade"
   },
   highlight = { enable = true },
   indent = { enable = true },
