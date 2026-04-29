@@ -76,7 +76,6 @@ local function toggle_line_comment()
 end
 
 -- Basics
-map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save file" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit window" })
 map("n", "<leader>h", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight" })
 map("n", "<leader>/", toggle_line_comment, { desc = "Toggle comment on current line" })
