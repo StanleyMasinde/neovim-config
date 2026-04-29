@@ -36,8 +36,8 @@ api.nvim_create_autocmd("User", {
   callback = function()
     require("nvim-treesitter.parsers").blade = {
       install_info = {
-        url    = "https://github.com/EmranMR/tree-sitter-blade",
-        files  = { "src/parser.c" },
+        url = "https://github.com/EmranMR/tree-sitter-blade",
+        files = { "src/parser.c" },
         branch = "main",
       },
       filetype = "blade",
