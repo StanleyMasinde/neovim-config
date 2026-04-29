@@ -1,5 +1,16 @@
 local api = vim.api
 
+-- Register filetypes
+vim.filetype.add {
+  pattern = {
+    [".*%.blade%.php"] = "blade",
+  },
+  extension = {
+    pug = "pug",
+    templ = "templ",
+  },
+}
+
 -- Highlight text on yank
 api.nvim_create_autocmd("TextYankPost", {
   group = api.nvim_create_augroup("YankHighlight", { clear = true }),
