@@ -1,4 +1,4 @@
-require'nvim-treesitter'.setup {
+require("nvim-treesitter").setup {
   ensure_installed = {
     "lua",
     "rust",
@@ -8,7 +8,7 @@ require'nvim-treesitter'.setup {
     "toml",
     "vim",
     "markdown",
-    "blade"
+    "blade",
   },
   highlight = { enable = true },
   indent = { enable = true },
