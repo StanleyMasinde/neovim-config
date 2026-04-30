@@ -79,8 +79,8 @@ end
 map("n", "<leader>h", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight" })
 map("n", "<leader>/", toggle_line_comment, { desc = "Toggle comment on current line" })
 map("x", "<leader>/", function()
-  local start_lnum = vim.fn.getpos "'<"[2]
-  local end_lnum = vim.fn.getpos "'>"[2]
+  local start_lnum = vim.fn.getpos("'<")[2]
+  local end_lnum = vim.fn.getpos("'>")[2]
   if start_lnum > end_lnum then
     start_lnum, end_lnum = end_lnum, start_lnum
   end
@@ -131,11 +131,6 @@ map("i", "jk", "<ESC>")
 map("n", "<leader>gd", vim.lsp.buf.definition, { desc = "Go to definition" })
 map("n", "<leader>ac", vim.lsp.buf.code_action, { desc = "Code actions" })
 map("n", "<leader>er", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
-
--- PHP specific mapping
-map("n", "<leader>pf", function()
-  require("conform").format { lsp_fallback = true }
-end, { desc = "Format PHP file" })
 
 -- Format file
 map("n", "<leader>fm", function()
