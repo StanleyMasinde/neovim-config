@@ -1,6 +1,5 @@
 ---@diagnostic disable: unused-local
 local vim = vim
-
 return {
   {
     "stevearc/conform.nvim",
@@ -167,5 +166,12 @@ return {
         default = { "lsp", "path", "buffer", "snippets" },
       },
     },
+  },
+  {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    config = true,
+    -- use opts = {} for passing setup options
+    -- this is equivalent to setup({}) function
   },
 }
