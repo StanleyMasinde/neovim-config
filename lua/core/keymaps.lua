@@ -103,8 +103,11 @@ map("n", "<leader>e", "<cmd>Neotree float<cr>", { desc = "Focus File Tree" })
 map("n", "<leader>tb", "<cmd>Neotree buffers<cr>", { desc = "Show open buffers" })
 
 -- Telescope
+map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Telescope find files" })
 map("n", "<leader>fl", "<cmd>Telescope live_grep<cr>", { desc = "Telescope live grep" })
 map("n", "<leader>fd", "<cmd>Telescope diagnostics<cr>", { desc = "Telescope diagnostics" })
+map("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Telescope buffers" })
+map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Telescope help tags" })
 
 -- LuxTerminal
 map("n", "<leader>tt", "<cmd>LuxtermToggle<cr>", { desc = "Luxterm toggle" })
