@@ -29,7 +29,7 @@ opt.splitbelow = true
 opt.splitright = true
 
 -- Clipboard + Mouse
-opt.mouse = "a"
+opt.mouse = ""
 opt.clipboard = "unnamedplus"
 
 -- Performance
