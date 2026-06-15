@@ -73,8 +73,8 @@ local function get_formatters_for_project()
     typescriptreact = js_formatters,
     vue = js_formatters,
     php = { "php_cs_fixer" },
-    css = { "prettier" },
-    html = { "prettier" },
+    css = { "eslint_d" },
+    html = { "eslint_d" },
   }
 end
 
