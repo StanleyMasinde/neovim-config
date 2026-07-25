@@ -1,7 +1,28 @@
 -- Vue language server plugin path (Mason v2 layout).
-local vue_language_server_path = vim.fn.expand "$MASON/packages"
+local mason_packages = vim.fn.expand "$MASON/packages"
+local vue_language_server_path = mason_packages
   .. "/vue-language-server"
   .. "/node_modules/@vue/language-server"
+
+-- vue_ls needs a TypeScript build that still exposes `ts.server` (TS 5/6).
+-- Mason's vue-language-server currently vendors TypeScript 7.x where `ts.server`
+-- is undefined, which crashes the server with:
+--   TypeError: Cannot read properties of undefined (reading 'protocol')
+-- Prefer the project workspace tsdk, then fall back to Mason's ts_ls TypeScript.
+local mason_tsdk = mason_packages
+  .. "/typescript-language-server/node_modules/typescript/lib"
+
+---@param root_dir string|nil
+---@return string
+local function resolve_tsdk(root_dir)
+  if root_dir then
+    local project_tsdk = vim.fs.joinpath(root_dir, "node_modules", "typescript", "lib")
+    if vim.uv.fs_stat(project_tsdk) then
+      return project_tsdk
+    end
+  end
+  return mason_tsdk
+end
 
 local tsserver_filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" }
 local vue_plugin = {
@@ -11,8 +32,8 @@ local vue_plugin = {
   configNamespace = "typescript",
 }
 
--- Prefer ts_ls: it is what Mason installs (typescript-language-server).
--- Wire the Vue TS plugin so .vue SFCs get proper TS support.
+-- Hybrid mode: ts_ls + @vue/typescript-plugin handles script/TS in .vue files;
+-- vue_ls handles template/style and talks to ts_ls via tsserver/request.
 vim.lsp.config("ts_ls", {
   init_options = {
     plugins = {
@@ -22,7 +43,16 @@ vim.lsp.config("ts_ls", {
   filetypes = tsserver_filetypes,
 })
 
-vim.lsp.config("vue_ls", {})
+vim.lsp.config("vue_ls", {
+  cmd = function(dispatchers, config)
+    local tsdk = resolve_tsdk(config and config.root_dir or nil)
+    return vim.lsp.rpc.start({
+      "vue-language-server",
+      "--stdio",
+      "--tsdk=" .. tsdk,
+    }, dispatchers)
+  end,
+})
 
 vim.lsp.config("rust_analyzer", {
   settings = {
