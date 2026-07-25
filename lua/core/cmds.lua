@@ -2,7 +2,7 @@ local api = vim.api
 local modes = { "light", "dark" }
 
 local function detect_system_theme()
-  if vim.loop.os_uname().sysname ~= "Darwin" then
+  if vim.uv.os_uname().sysname ~= "Darwin" then
     return nil
   end
 

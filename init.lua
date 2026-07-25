@@ -1,6 +1,4 @@
-if vim.loader then
-  vim.loader.enable()
-end
+vim.loader.enable()
 
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
@@ -90,26 +88,28 @@ require("catppuccin").setup {
   default_integrations = true,
   auto_integrations = false,
   integrations = {
-    cmp = true,
+    blink_cmp = true,
     gitsigns = true,
-    nvimtree = true,
+    neotree = true,
+    telescope = true,
+    which_key = true,
     notify = false,
     mason = true,
     mini = {
       enabled = true,
       indentscope_color = "",
     },
-    -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
   },
 }
 
--- setup must be called before loading
-vim.cmd.colorscheme "catppuccin"
+-- Prefer plugin name to avoid clashing with Neovim 0.12's built-in catppuccin
+vim.cmd.colorscheme "catppuccin-nvim"
 
 vim.diagnostic.config {
+  -- Pick one of virtual_text / virtual_lines (both = double display)
   virtual_text = true,
-  virtual_lines = true,
-  disabled = false,
+  virtual_lines = false,
+  severity_sort = true,
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = "",

@@ -57,8 +57,9 @@ return {
   { "wakatime/vim-wakatime", lazy = false },
   {
     "nvim-treesitter/nvim-treesitter",
+    -- main branch does not support lazy-loading
+    lazy = false,
     build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
     config = function()
       require "plugins.configs.treesitter"
     end,
@@ -80,7 +81,14 @@ return {
     end,
   },
   { "williamboman/mason.nvim", config = true },
-  { "williamboman/mason-lspconfig.nvim", config = true },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    -- Do not auto-enable every Mason package (avoids duplicate PHP/emmet/TS clients).
+    -- Servers are enabled explicitly in plugins.configs.lsp.
+    opts = {
+      automatic_enable = false,
+    },
+  },
   {
     "neovim/nvim-lspconfig",
     dependencies = {

@@ -1,13 +1,7 @@
--- If you are using mason.nvim, you can get the ts_plugin_path like this
--- For Mason v1,
--- local mason_registry = require('mason-registry')
--- local vue_language_server_path = mason_registry.get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/language-server'
--- For Mason v2,
+-- Vue language server plugin path (Mason v2 layout).
 local vue_language_server_path = vim.fn.expand "$MASON/packages"
   .. "/vue-language-server"
   .. "/node_modules/@vue/language-server"
--- or even
--- local vue_language_server_path = vim.fn.stdpath('data') .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
 
 local tsserver_filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" }
 local vue_plugin = {
@@ -16,28 +10,20 @@ local vue_plugin = {
   languages = { "vue" },
   configNamespace = "typescript",
 }
-local vtsls_config = {
-  settings = {
-    vtsls = {
-      tsserver = {
-        globalPlugins = {
-          vue_plugin,
-        },
-      },
-    },
-  },
-  filetypes = tsserver_filetypes,
-}
 
-local ts_ls_config = {
+-- Prefer ts_ls: it is what Mason installs (typescript-language-server).
+-- Wire the Vue TS plugin so .vue SFCs get proper TS support.
+vim.lsp.config("ts_ls", {
   init_options = {
     plugins = {
       vue_plugin,
     },
   },
   filetypes = tsserver_filetypes,
-}
--- Rust Analyzer
+})
+
+vim.lsp.config("vue_ls", {})
+
 vim.lsp.config("rust_analyzer", {
   settings = {
     ["rust-analyzer"] = {
@@ -48,13 +34,21 @@ vim.lsp.config("rust_analyzer", {
   },
 })
 
--- If you are on most recent `nvim-lspconfig`
-local vue_ls_config = {}
--- If you are not on most recent `nvim-lspconfig` or you want to override
--- nvim 0.11 or above
-vim.lsp.config("vtsls", vtsls_config)
-vim.lsp.config("vue_ls", vue_ls_config)
-vim.lsp.config("ts_ls", ts_ls_config)
-vim.lsp.enable { "vtsls", "vue_ls", "rust_analyzer" } -- If using `ts_ls` replace `vtsls` to `ts_ls`
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- Explicit enable list only (mason-lspconfig automatic_enable is off).
+-- One server per role: intelephense (not phpactor), emmet_language_server (not emmet_ls),
+-- ts_ls (Mason's typescript-language-server; not vtsls).
+-- Add servers here after :MasonInstall, or install lua_ls / jsonls if you want them.
+vim.lsp.enable {
+  "ts_ls",
+  "vue_ls",
+  "rust_analyzer", -- install via OS package manager (see README)
+  "bashls",
+  "cssls",
+  "html",
+  "tailwindcss",
+  "eslint",
+  "intelephense",
+  "gopls",
+  "marksman",
+  "emmet_language_server",
+}

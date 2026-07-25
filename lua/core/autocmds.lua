@@ -31,6 +31,7 @@ api.nvim_create_autocmd("VimResized", {
   command = "tabdo wincmd =",
 })
 
+-- Register blade parser for nvim-treesitter main branch
 api.nvim_create_autocmd("User", {
   pattern = "TSUpdate",
   callback = function()
@@ -45,13 +46,5 @@ api.nvim_create_autocmd("User", {
   end,
 })
 
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "blade",
-  callback = function()
-    local ok, _ = pcall(vim.treesitter.start)
-    if not ok then
-      vim.notify("Blade parser not installed. Run :TSInstall blade", vim.log.levels.WARN)
-    end
-  end,
-})
+-- Ensure blade filetype maps to the blade parser
+vim.treesitter.language.register("blade", "blade")

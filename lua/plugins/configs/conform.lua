@@ -8,14 +8,7 @@ local function has_file(file)
 end
 
 local function get_cwd()
-  -- Get current working directory in a shell-independent way
-  local handle = io.popen("pwd")
-  local result = ""
-  if handle then
-    result = handle:read("*a"):gsub("\n$", "")
-    handle:close()
-  end
-  return result
+  return vim.fn.getcwd()
 end
 
 local function has_any_file(files, root)
