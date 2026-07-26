@@ -107,8 +107,8 @@ vim.cmd.colorscheme "catppuccin-nvim"
 
 vim.diagnostic.config {
   -- Pick one of virtual_text / virtual_lines (both = double display)
-  virtual_text = true,
-  virtual_lines = false,
+  virtual_text = false,
+  virtual_lines = true,
   severity_sort = true,
   signs = {
     text = {
