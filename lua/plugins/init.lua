@@ -3,7 +3,10 @@ local vim = vim
 return {
   {
     "stevearc/conform.nvim",
-    opts = require "plugins.configs.conform",
+    -- Defer require so conform.util is available when the plugin loads.
+    opts = function()
+      return require "plugins.configs.conform"
+    end,
   },
   {
     "goolord/alpha-nvim",

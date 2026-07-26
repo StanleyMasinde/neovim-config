@@ -51,9 +51,9 @@ map("n", "<leader>er", function()
   vim.diagnostic.jump { count = 1, float = true }
 end, { desc = "Next diagnostic" })
 
--- Format file
+-- Format file (project formatters via conform; LSP only if none available)
 map("n", "<leader>fm", function()
-  require("conform").format { lsp_fallback = true }
+  require("conform").format { lsp_format = "fallback" }
 end, { desc = "Format file" })
 
 -- Git
