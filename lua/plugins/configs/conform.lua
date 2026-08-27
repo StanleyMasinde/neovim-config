@@ -191,8 +191,8 @@ local options = {
     -- Prefer project-local `eslint` (not eslint_d). Works with flat config + stylistic.
     eslint_fix = {
       command = util.from_node_modules "eslint",
-      args = { "--fix-dry-run", "--stdin", "--stdin-filename", "$FILENAME" },
-      stdin = true,
+      args = { "--fix", "$FILENAME" },
+      stdin = false,
       cwd = util.root_file {
         "package.json",
         "eslint.config.js",
