@@ -1,4 +1,4 @@
-# neovim-config/
+# Neovim-Configuration/
 
 <a href="https://dotfyle.com/StanleyMasinde/neovim-config"><img src="https://dotfyle.com/StanleyMasinde/neovim-config/badges/plugins?style=flat" /></a>
 <a href="https://dotfyle.com/StanleyMasinde/neovim-config"><img src="https://dotfyle.com/StanleyMasinde/neovim-config/badges/leaderkey?style=flat" /></a>
@@ -6,7 +6,7 @@
 
 
 > [!IMPORTANT]
-> Please use the OS package manager to install rust-analyzer. This is because rustacean-vim confilicts with the Mason version of rust-analyzer.
+> Please use the OS package manager to install rust-analyzer. This is because rustacean-vim conflicts with the Mason version of rust-analyzer.
 > Check here on how to install it: https://rust-analyzer.github.io/book/rust_analyzer_binary.html.
 > More about the issue can be found [here](https://github.com/mrcjkb/rustaceanvim/discussions/94#discussion-5946041). You might find a better way to install it there.
 
@@ -34,61 +34,62 @@ NVIM_APPNAME=StanleyMasinde/neovim-config/ nvim
 
 ## Plugins
 
-### colorscheme
+### Colour Scheme
 
 + [catppuccin/nvim](https://dotfyle.com/plugins/catppuccin/nvim)
-### completion
+
+### Completion
 
 + [saghen/blink.cmp](https://dotfyle.com/plugins/saghen/blink.cmp)
-### editing-support
+### Editing-Support
 
 + [windwp/nvim-autopairs](https://dotfyle.com/plugins/windwp/nvim-autopairs)
-### file-explorer
+### File-Explorer
 
 + [nvim-neo-tree/neo-tree.nvim](https://dotfyle.com/plugins/nvim-neo-tree/neo-tree.nvim)
-### formatting
+### Formatting
 
 + [stevearc/conform.nvim](https://dotfyle.com/plugins/stevearc/conform.nvim)
-### fuzzy-finder
+### Fuzzy-Finder
 
 + [nvim-telescope/telescope.nvim](https://dotfyle.com/plugins/nvim-telescope/telescope.nvim)
-### git
+### Git
 
 + [lewis6991/gitsigns.nvim](https://dotfyle.com/plugins/lewis6991/gitsigns.nvim)
 + [kdheepak/lazygit.nvim](https://dotfyle.com/plugins/kdheepak/lazygit.nvim)
-### icon
+### Icon
 
 + [echasnovski/mini.icons](https://dotfyle.com/plugins/echasnovski/mini.icons)
 + [nvim-tree/nvim-web-devicons](https://dotfyle.com/plugins/nvim-tree/nvim-web-devicons)
-### keybinding
+### Key Binding
 
 + [folke/which-key.nvim](https://dotfyle.com/plugins/folke/which-key.nvim)
-### lsp
+### LSP
 
 + [neovim/nvim-lspconfig](https://dotfyle.com/plugins/neovim/nvim-lspconfig)
-### lsp-installer
+### Lsp-Installer
 
 + [williamboman/mason.nvim](https://dotfyle.com/plugins/williamboman/mason.nvim)
-### nvim-dev
+### Nvim-Dev
 
 + [nvim-lua/plenary.nvim](https://dotfyle.com/plugins/nvim-lua/plenary.nvim)
 + [MunifTanjim/nui.nvim](https://dotfyle.com/plugins/MunifTanjim/nui.nvim)
-### plugin-manager
+### Plugin-Manager
 
 + [folke/lazy.nvim](https://dotfyle.com/plugins/folke/lazy.nvim)
-### snippet
+### Snippet
 
 + [rafamadriz/friendly-snippets](https://dotfyle.com/plugins/rafamadriz/friendly-snippets)
-### startup
+### Startup
 
 + [goolord/alpha-nvim](https://dotfyle.com/plugins/goolord/alpha-nvim)
-### statusline
+### Statusline
 
 + [rebelot/heirline.nvim](https://dotfyle.com/plugins/rebelot/heirline.nvim)
-### syntax
+### Syntax
 
 + [nvim-treesitter/nvim-treesitter](https://dotfyle.com/plugins/nvim-treesitter/nvim-treesitter)
-### tabline
+### Tabline
 
 + [romgrk/barbar.nvim](https://dotfyle.com/plugins/romgrk/barbar.nvim)
 ## Language Servers
