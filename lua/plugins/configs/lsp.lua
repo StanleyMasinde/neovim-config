@@ -53,7 +53,44 @@ vim.lsp.config("vue_ls", {
 
 vim.lsp.config("harper_ls", {
   cmd = { "harper-ls", "--stdio" },
-  filetypes = { "markdown", "text", "gitcommit", "rust" },
+  filetypes = {
+    -- Prose / Markup
+    "markdown",
+    "text",
+    "gitcommit",
+    "asciidoc",
+    "typst",
+    "org",
+    "mail",
+    "tex",
+    "latex",
+    "html",
+
+    -- Programming Languages (checks comments & strings)
+    "rust",
+    "c",
+    "cpp",
+    "csharp",
+    "go",
+    "python",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "java",
+    "kotlin",
+    "swift",
+    "lua",
+    "php",
+    "ruby",
+    "elixir",
+    "zig",
+    "nix",
+    "sh",
+    "bash",
+    "powershell",
+    "toml",
+  },
   root_markers = { ".git" },
   settings = {
     ["harper-ls"] = {
