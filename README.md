@@ -18,7 +18,7 @@
 
 ## Install Instructions
 
- > Install requires Neovim 0.9+. Always review the code before installing a configuration.
+ > Install requires Neovim 0.12+. Always review the code before installing a configuration.
 
 Clone the repository and install the plugins:
 
@@ -59,7 +59,6 @@ NVIM_APPNAME=StanleyMasinde/neovim-config/ nvim
 + [kdheepak/lazygit.nvim](https://dotfyle.com/plugins/kdheepak/lazygit.nvim)
 ### Icon
 
-+ [echasnovski/mini.icons](https://dotfyle.com/plugins/echasnovski/mini.icons)
 + [nvim-tree/nvim-web-devicons](https://dotfyle.com/plugins/nvim-tree/nvim-web-devicons)
 ### Key Binding
 

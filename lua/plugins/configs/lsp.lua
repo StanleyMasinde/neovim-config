@@ -104,7 +104,7 @@ vim.lsp.config("harper_ls", {
   },
 })
 
--- Explicit enable list only (mason-lspconfig automatic_enable is off).
+-- Enable servers explicitly; Mason handles installation and PATH only.
 -- One server per role: intelephense (not phpactor), emmet_language_server (not emmet_ls),
 -- ts_ls (Mason's typescript-language-server; not vtsls).
 -- Add servers here after :MasonInstall, or install lua_ls / jsonls if you want them.

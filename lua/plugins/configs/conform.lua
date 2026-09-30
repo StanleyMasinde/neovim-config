@@ -16,28 +16,6 @@ local eslint_config_files = {
   "eslint.config.cts",
 }
 
--- Config files that mean "this project uses Prettier".
-local prettier_config_files = {
-  ".prettierrc",
-  ".prettierrc.json",
-  ".prettierrc.yml",
-  ".prettierrc.yaml",
-  ".prettierrc.json5",
-  ".prettierrc.js",
-  ".prettierrc.cjs",
-  ".prettierrc.mjs",
-  ".prettierrc.ts",
-  ".prettierrc.cts",
-  ".prettierrc.mts",
-  ".prettierrc.toml",
-  "prettier.config.js",
-  "prettier.config.cjs",
-  "prettier.config.mjs",
-  "prettier.config.ts",
-  "prettier.config.cts",
-  "prettier.config.mts",
-}
-
 -- https://oxc.rs/docs/guide/usage/linter/config.html
 local oxlint_config_files = {
   ".oxlintrc.json",
@@ -99,23 +77,11 @@ local function read_package_json(bufnr)
   return nil
 end
 
----@param bufnr integer
----@param key string
----@return boolean
-local function package_json_has_key(bufnr, key)
-  local data = read_package_json(bufnr)
-  return data ~= nil and data[key] ~= nil
-end
-
 ---True if package.json lists the package in any dependency field.
----@param bufnr integer
+---@param data table
 ---@param name string
 ---@return boolean
-local function package_has_dependency(bufnr, name)
-  local data = read_package_json(bufnr)
-  if not data then
-    return false
-  end
+local function package_has_dependency(data, name)
   for _, field in ipairs { "dependencies", "devDependencies", "optionalDependencies", "peerDependencies" } do
     local deps = data[field]
     if type(deps) == "table" and deps[name] ~= nil then
@@ -125,61 +91,32 @@ local function package_has_dependency(bufnr, name)
   return false
 end
 
----@param bufnr integer
----@return boolean
-local function project_has_eslint(bufnr)
-  -- Config only: many repos depend on eslint for lint CI without using it to format.
-  return has_file_upward(bufnr, eslint_config_files) or package_json_has_key(bufnr, "eslintConfig")
-end
+local lint_filetypes = {
+  javascript = true,
+  javascriptreact = true,
+  typescript = true,
+  typescriptreact = true,
+  vue = true,
+}
 
----@param bufnr integer
----@return boolean
-local function project_has_prettier(bufnr)
-  return has_file_upward(bufnr, prettier_config_files)
-    or package_json_has_key(bufnr, "prettier")
-    or package_has_dependency(bufnr, "prettier")
-end
-
----@param bufnr integer
----@return boolean
-local function project_has_oxlint(bufnr)
-  return has_file_upward(bufnr, oxlint_config_files) or package_has_dependency(bufnr, "oxlint")
-end
-
----@param bufnr integer
----@return boolean
-local function project_has_oxfmt(bufnr)
-  return has_file_upward(bufnr, oxfmt_config_files) or package_has_dependency(bufnr, "oxfmt")
-end
-
----Follow the project for JS-family (and CSS/HTML/JSON) formatting.
----
----Lint/fix (prefer Oxc over ESLint when both exist):
----  oxlint config/dep → oxlint --fix
----  else eslint       → eslint --fix
----
----Pure format (prefer Oxc over Prettier when both exist):
----  oxfmt config/dep  → oxfmt
----  else prettier cfg → prettier
----  else if nothing   → prettier (default)
+---Run project lint fixes for JS-family files, then always select a formatter.
 ---@param bufnr integer
 ---@return string[]
 local function project_js_formatters(bufnr)
+  local data = read_package_json(bufnr) or {}
   local formatters = {}
 
-  -- Auto-fix linters first.
-  if project_has_oxlint(bufnr) then
-    table.insert(formatters, "oxlint")
-  elseif project_has_eslint(bufnr) then
-    table.insert(formatters, "eslint_fix")
+  if lint_filetypes[vim.bo[bufnr].filetype] then
+    if has_file_upward(bufnr, oxlint_config_files) or package_has_dependency(data, "oxlint") then
+      table.insert(formatters, "oxlint")
+    elseif has_file_upward(bufnr, eslint_config_files) or data.eslintConfig ~= nil then
+      table.insert(formatters, "eslint_fix")
+    end
   end
 
-  -- Then pretty-printers.
-  if project_has_oxfmt(bufnr) then
+  if has_file_upward(bufnr, oxfmt_config_files) or package_has_dependency(data, "oxfmt") then
     table.insert(formatters, "oxfmt")
-  elseif project_has_prettier(bufnr) then
-    table.insert(formatters, "prettier")
-  elseif #formatters == 0 then
+  else
     table.insert(formatters, "prettier")
   end
 

@@ -3,6 +3,8 @@ local vim = vim
 return {
   {
     "stevearc/conform.nvim",
+    lazy = true,
+    cmd = "ConformInfo",
     -- Defer require so conform.util is available when the plugin loads.
     opts = function()
       return require "plugins.configs.conform"
@@ -10,9 +12,11 @@ return {
   },
   {
     "goolord/alpha-nvim",
-    dependencies = { "echasnovski/mini.icons" },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
-      require("alpha").setup(require("alpha.themes.startify").config)
+      local startify = require "alpha.themes.startify"
+      startify.file_icons.provider = "devicons"
+      require("alpha").setup(startify.config)
     end,
   },
   {
@@ -32,7 +36,6 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPre", "BufNewFile" },
-    dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       require "plugins.configs.gitsigns"
     end,
@@ -85,18 +88,9 @@ return {
   },
   { "williamboman/mason.nvim", config = true },
   {
-    "williamboman/mason-lspconfig.nvim",
-    -- Do not auto-enable every Mason package (avoids duplicate PHP/emmet/TS clients).
-    -- Servers are enabled explicitly in plugins.configs.lsp.
-    opts = {
-      automatic_enable = false,
-    },
-  },
-  {
     "neovim/nvim-lspconfig",
     dependencies = {
       "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
     },
     event = { "BufReadPre", "BufNewFile" },
     config = function()
@@ -130,9 +124,7 @@ return {
   },
   {
     "romgrk/barbar.nvim",
-    dependencies = {
-      "lewis6991/gitsigns.nvim",
-    },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     init = function()
       vim.g.barbar_auto_setup = false
     end,
@@ -141,6 +133,10 @@ return {
   },
   {
     "luxvim/nvim-luxterm",
+    cmd = { "LuxtermToggle", "LuxtermNew", "LuxtermNext", "LuxtermPrev", "LuxtermKill", "LuxtermList", "LuxtermStats" },
+    keys = {
+      { "<C-/>", "<cmd>LuxtermToggle<cr>", mode = { "n", "t" }, desc = "Toggle Luxterm manager" },
+    },
     config = function()
       require("luxterm").setup {
         manager_width = 0.8,

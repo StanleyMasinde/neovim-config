@@ -1,21 +1,10 @@
 local api = vim.api
 
--- Register filetypes
-vim.filetype.add {
-  pattern = {
-    [".*%.blade%.php"] = "blade",
-  },
-  extension = {
-    pug = "pug",
-    templ = "templ",
-  },
-}
-
 -- Highlight text on yank
 api.nvim_create_autocmd("TextYankPost", {
   group = api.nvim_create_augroup("YankHighlight", { clear = true }),
   callback = function()
-    vim.highlight.on_yank { higroup = "Visual", timeout = 150 }
+    vim.hl.on_yank { higroup = "Visual", timeout = 150 }
   end,
 })
 
@@ -28,23 +17,16 @@ api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
 -- Resize splits when window resized
 api.nvim_create_autocmd("VimResized", {
   group = api.nvim_create_augroup("ResizeSplits", { clear = true }),
-  command = "tabdo wincmd =",
-})
-
--- Register blade parser for nvim-treesitter main branch
-api.nvim_create_autocmd("User", {
-  pattern = "TSUpdate",
   callback = function()
-    require("nvim-treesitter.parsers").blade = {
-      install_info = {
-        url = "https://github.com/EmranMR/tree-sitter-blade",
-        files = { "src/parser.c" },
-        branch = "main",
-      },
-      filetype = "blade",
-    }
+    local current_win = api.nvim_get_current_win()
+    for _, tab in ipairs(api.nvim_list_tabpages()) do
+      local win = api.nvim_tabpage_get_win(tab)
+      api.nvim_win_call(win, function()
+        vim.cmd "wincmd ="
+      end)
+    end
+    if api.nvim_win_is_valid(current_win) then
+      api.nvim_set_current_win(current_win)
+    end
   end,
 })
-
--- Ensure blade filetype maps to the blade parser
-vim.treesitter.language.register("blade", "blade")

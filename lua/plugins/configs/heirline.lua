@@ -178,9 +178,7 @@ local statusline = {
 
   -- File info
   {
-    provider = function()
-      return " " .. vim.fn.expand "%:t" .. " "
-    end,
+    provider = " %t ",
     hl = statusline_hl,
   },
 
@@ -196,7 +194,7 @@ local statusline = {
     end,
     {
       provider = function(self)
-        return string.format(" %s %s(", git_icon(), self.branch)
+        return string.format(" %s %s(", git_icon(), (self.branch:gsub("%%", "%%%%")))
       end,
       hl = statusline_hl,
     },
